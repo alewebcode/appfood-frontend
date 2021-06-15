@@ -211,13 +211,25 @@ export default function CompanyForm({ match }) {
           </FormInline>
           <FormInline>
             <FormGroup>
-              <label htmlFor="city">City</label>
+              <label htmlFor="city">Cidade</label>
               <Input name="city" />
             </FormGroup>
             <FormGroup>
               <label htmlFor="state">UF</label>
-              {initialData.state && (
-                <Select name="state" options={optionsState} />
+              {!isAdd ? (
+                initialData.state && (
+                  <Select
+                    name="state"
+                    options={optionsState}
+                    placeholder="Selecione"
+                  />
+                )
+              ) : (
+                <Select
+                  name="state"
+                  options={optionsState}
+                  placeholder="Selecione"
+                />
               )}
             </FormGroup>
           </FormInline>
@@ -235,7 +247,11 @@ export default function CompanyForm({ match }) {
             <label htmlFor="segment">Segmento</label>
 
             {optionsSelect.length && (
-              <Select name="segment" options={optionsSelect} />
+              <Select
+                name="segment"
+                options={optionsSelect}
+                placeholder="Selecione"
+              />
             )}
           </FormGroup>
           <FormInline>

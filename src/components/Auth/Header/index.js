@@ -18,7 +18,7 @@ export function Header() {
         <NavMenu>
           <ul>
             <li>
-              <Link to="/dashboard">
+              <Link to="/auth/dashboard">
                 <strong>Dashboard</strong>
               </Link>
             </li>

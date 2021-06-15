@@ -66,7 +66,7 @@ export default function ProductForm({ match }) {
       formData.append('description', data.description);
       formData.append('price', data.price);
       formData.append('category', data.category);
-      formData.append('company', 46); // somente teste
+      formData.append('company', 1); // somente teste
 
       try {
         await api.post('/products', formData);
@@ -80,7 +80,7 @@ export default function ProductForm({ match }) {
       formData.append('description', data.description);
       formData.append('price', data.price);
       formData.append('category', data.category);
-      formData.append('company', 46); // somente teste
+      formData.append('company', 1); // somente teste
 
       await api.put(`/products/${id}`, formData);
 

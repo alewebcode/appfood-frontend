@@ -123,8 +123,20 @@ export default function ProductForm({ match }) {
           </FormGroup>
           <FormGroup>
             <label htmlFor="category">Categoria</label>
-            {initialData.category && (
-              <Select name="category" options={optionsSelect} />
+            {!isAdd ? (
+              initialData.category && (
+                <Select
+                  name="category"
+                  options={optionsSelect}
+                  placeholder="Selecione"
+                />
+              )
+            ) : (
+              <Select
+                name="category"
+                options={optionsSelect}
+                placeholder="Selecione"
+              />
             )}
           </FormGroup>
         </Form>

@@ -7,23 +7,27 @@ import api from '../../services/api';
 export default function ProductsCompany() {
   const location = useLocation();
   const [company, setCompany] = useState([]);
-  const [products, setProducts] = useState([]);
+  const [coupons, setCoupons] = useState([]);
+  // const [products, setProducts] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const uploads = 'http://192.168.0.102:3333/uploads';
+  // const uploads = 'http://192.168.0.102:3333/uploads';
+  const uploads = 'https://appfood-backend.herokuapp.com/uploads';
 
   useEffect(() => {
     setCompany(location.company);
 
     async function loadProducts() {
       const response = await api.get(
-        `/products/companies/${location.company.id}`
+        `/coupons/products/${location.company.id}`
       );
 
-      setProducts(response.data);
+      setCoupons(response.data);
       setIsLoaded(true);
     }
 
     loadProducts();
+
+    // console.log(company);
   }, []);
 
   return (
@@ -37,16 +41,27 @@ export default function ProductsCompany() {
           {!isLoaded ? (
             <p>Carregando...</p>
           ) : (
-            products.map(product => (
-              <div key={product.id}>
+            coupons.map(coupon => (
+              <div key={coupon.id}>
                 <ProductInfo>
-                  <h1>{product.name}</h1>
-                  <span>{product.description}</span>
-                  <h6>R$ {product.price}</h6>
-                  <p>Cupom Burguer | R$ 10,00</p>
+                  <h1>{coupon.product.name}</h1>
+                  <span>{coupon.product.description}</span>
+                  <h6>
+                    {new Intl.NumberFormat('pt-BR', {
+                      style: 'currency',
+                      currency: 'BRL',
+                    }).format(coupon.product.price)}
+                  </h6>
+                  <p>
+                    {coupon.coupon_code} |{' '}
+                    {new Intl.NumberFormat('pt-BR', {
+                      style: 'currency',
+                      currency: 'BRL',
+                    }).format(coupon.amount)}
+                  </p>
                 </ProductInfo>
 
-                <img src={`${uploads}/${product.image}`} alt="product" />
+                <img src={`${uploads}/${coupon.product.image}`} alt="product" />
               </div>
             ))
           )}

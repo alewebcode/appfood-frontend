@@ -105,5 +105,6 @@ export const ProductInfo = styled.div`
     margin-left: 1rem;
     width: 15rem;
     padding: 0.3rem;
+    text-align: center;
   }
 `;

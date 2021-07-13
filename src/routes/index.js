@@ -9,6 +9,9 @@ import DefaultLayout from '../pages/_layouts/default';
 import Home from '../pages/Home';
 import About from '../pages/About';
 import Contact from '../pages/Contact';
+import ListCompanies from '../pages/ListCompanies';
+import ProductsCompany from '../pages/ProductsCompany';
+
 import Login from '../pages/Login';
 import Dashboard from '../pages/Auth/Dashboard';
 import Company from '../pages/Auth/Company';
@@ -19,6 +22,12 @@ import CategoryForm from '../pages/Auth/CategoryForm';
 import Category from '../pages/Auth/Category';
 import ProductForm from '../pages/Auth/ProductForm';
 import Product from '../pages/Auth/Product';
+import SalesmanForm from '../pages/Auth/SalesmanForm';
+import Salesman from '../pages/Auth/Salesman';
+import User from '../pages/Auth/Users';
+import UserForm from '../pages/Auth/UserForm';
+import CouponForm from '../pages/Auth/CouponForm';
+import Coupon from '../pages/Auth/Coupon';
 
 export default function Routes() {
   return (
@@ -28,6 +37,16 @@ export default function Routes() {
         <Route path="/About" layout={Default} component={About} />
         <Route path="/Contact" layout={Default} component={Contact} />
         <Route path="/login" layout={AuthLayout} component={Login} />
+        <Route
+          path="/ListCompanies"
+          layout={Default}
+          component={ListCompanies}
+        />
+        <Route
+          path="/products/company"
+          layout={Default}
+          component={ProductsCompany}
+        />
         <Route
           path="/auth/dashboard"
           layout={DefaultLayout}
@@ -99,6 +118,44 @@ export default function Routes() {
           layout={DefaultLayout}
           component={ProductForm}
         />
+        <Route
+          path="/auth/salesman/create"
+          layout={DefaultLayout}
+          component={SalesmanForm}
+        />
+        <Route
+          path="/auth/salesmans"
+          layout={DefaultLayout}
+          component={Salesman}
+        />
+        <Route
+          path="/auth/salesman/edit/:id"
+          layout={DefaultLayout}
+          component={SalesmanForm}
+        />
+        <Route path="/auth/users" layout={DefaultLayout} component={User} />
+
+        <Route
+          path="/auth/user/edit/:id"
+          layout={DefaultLayout}
+          component={UserForm}
+        />
+        <Route
+          path="/auth/user/create"
+          layout={DefaultLayout}
+          component={UserForm}
+        />
+        <Route
+          path="/auth/coupon/edit/:id"
+          layout={DefaultLayout}
+          component={CouponForm}
+        />
+        <Route
+          path="/auth/coupon/create"
+          layout={DefaultLayout}
+          component={CouponForm}
+        />
+        <Route path="/auth/coupons" layout={DefaultLayout} component={Coupon} />
       </Switch>
     </BrowserRouter>
   );

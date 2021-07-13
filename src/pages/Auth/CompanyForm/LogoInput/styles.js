@@ -13,8 +13,8 @@ export const Container = styled.div`
     }
 
     img {
-      height: 150px;
-      width: 150px;
+      height: 180px;
+      width: 240px;
       border: 3px dashed rgba(255, 255, 255, 0.3);
       background: #eee;
     }

@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import { Form as Unform } from '@unform/web';
 
-export const Container = styled.div``;
+export const Container = styled.div`
+  width: 100%;
+`;
 
 export const Header = styled.div`
   display: flex;

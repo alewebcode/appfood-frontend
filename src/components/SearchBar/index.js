@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import AsyncSelect from 'react-select/async';
+import api from '../../services/api';
 
 import { Container, Content } from './styles';
 
 export default function SearchBar() {
+  const history = useHistory();
   const [selectData, setSelectData] = useState('');
-  const mapResponseToValuesAndLabels = data => ({
-    value: data.id,
-    label: data.name,
-  });
+  const [initialOptions, setOptions] = useState([]);
+
   const customStyles = {
     control: styles => ({
       ...styles,
@@ -23,32 +24,62 @@ export default function SearchBar() {
     }),
   };
 
-  async function callApi(value) {
-    const data = await fetch(`https://jsonplaceholder.typicode.com/users`)
-      .then(response => response.json())
-      .then(response => response.map(mapResponseToValuesAndLabels))
-      .then(final =>
-        final.filter(i => i.label.toLowerCase().includes(value.toLowerCase()))
-      );
+  useEffect(() => {
+    async function loadInitialItems() {
+      const response = await api.get('/companies/filterCities');
 
-    return data;
+      const options = response.data.map(city => ({
+        value: city.city,
+        label: city.city,
+      }));
+
+      setOptions(options);
+    }
+
+    loadInitialItems();
+  }, [selectData]);
+
+  // const filteredOptions = useMemo(
+  //   () => initialOptions.map(data => ({ label: data.name, value: data.name })),
+  //   [initialOptions]
+  // );
+
+  const filterOptions = search =>
+    initialOptions.filter(i =>
+      i.label.toLowerCase().includes(search.toLowerCase())
+    );
+
+  function loadOptions(selectData_, cb) {
+    cb(filterOptions(selectData_));
+  }
+
+  function handleChange(newValue) {
+    setSelectData(newValue);
+  }
+
+  function searchCompanies() {
+    history.push({
+      pathname: '/ListCompanies',
+      state: { selectedCity: selectData, cities: initialOptions },
+    });
   }
 
   return (
     <Container>
       <Content>
         <AsyncSelect
+          isClearable
           style={{ flex: 1 }}
           cacheOptions
-          loadOptions={callApi}
-          onChange={data => {
-            setSelectData(data);
-          }}
+          loadOptions={loadOptions}
+          onChange={handleChange}
           value={selectData}
           styles={customStyles}
           placeholder="Buscar cidade"
         />
-        <button type="button">BUSCAR</button>
+        <button type="button" onClick={searchCompanies}>
+          BUSCAR
+        </button>
       </Content>
     </Container>
   );

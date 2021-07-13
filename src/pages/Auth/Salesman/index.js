@@ -8,8 +8,8 @@ import {
   FiChevronLeft,
 } from 'react-icons/fi';
 import { toast } from 'react-toastify';
-import api from '../../../services/api';
 import { SearchFilter } from '../../../components/Auth/SearchFilter';
+import api from '../../../services/api';
 
 import {
   Container,
@@ -24,19 +24,20 @@ import {
   PaginationNumber,
 } from './styles';
 
-export default function Company() {
+export default function Segment() {
   const history = useHistory();
-  const [companies, setCompanies] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [search, setSearch] = useState('');
+  const [salesmans, setSalesmans] = useState([]);
   const [total, setTotal] = useState(0);
   const [pages, setPages] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [search, setSearch] = useState('');
+  // const [limit, setLimit] = useState(5);
   const limit = 10;
 
   useEffect(() => {
-    async function loadCompanies() {
+    async function loadSalesmans() {
       const response = await api.get(
-        `/companies?page=${currentPage}&limit=${limit}`
+        `/salesmans?page=${currentPage}&limit=${limit}`
       );
 
       setTotal(response.data.totalResults);
@@ -50,38 +51,40 @@ export default function Company() {
       }
 
       setPages(arrPages);
-      setCompanies(response.data.companies);
+      setSalesmans(response.data.salesmans);
 
       if (search) {
         const filters = await api.get(
-          `/companies?filter=${search.toLowerCase()}&page=${currentPage}&limit=${limit}`
+          `/salesmans?filter=${search.toLowerCase()}&page=${currentPage}&limit=${limit}`
         );
-        setCompanies(filters.data.companies);
+        setSalesmans(filters.data.salesmans);
       }
     }
 
-    loadCompanies();
-  }, []);
+    loadSalesmans();
+  }, [currentPage, total, search]);
 
-  async function deleteCompany(id) {
-    const index = companies.findIndex(element => element.id === id);
+  async function deleteSalesman(id) {
+    await api.delete(`/salesmans/${id}`);
 
-    await api.delete(`/companies/${id}`);
+    const listSalesmans = salesmans.filter(element => element.id !== id);
 
-    setCompanies(companies.splice(index));
+    setSalesmans(listSalesmans);
 
     toast.success('Excluído com sucesso');
 
-    history.push('/auth/companies');
+    history.push('/auth/salesmans');
   }
 
   return (
     <Container>
       <Header>
-        <strong>Empresas</strong>
-        <Link to="company/create">
+        <strong>Vendedores</strong>
+        <Link to="salesman/create">
+          {/* <button type="button"> */}
           <FiPlusCircle />
           <span>Novo</span>
+          {/* </button> */}
         </Link>
       </Header>
       <SearchFilter
@@ -94,26 +97,26 @@ export default function Company() {
         <Table>
           <thead>
             <tr>
-              <th>Empresa</th>
+              <th>Nome</th>
               <th>Telefone</th>
               <th>Email</th>
               <th>Ações</th>
             </tr>
           </thead>
           <tbody>
-            {companies.map(company => (
-              <tr key={company.id}>
-                <td>{company.name}</td>
-                <td>{company.phone}</td>
-                <td>{company.email}</td>
+            {salesmans.map(salesman => (
+              <tr key={salesman.id}>
+                <td>{salesman.name}</td>
+                <td>{salesman.phone}</td>
+                <td>{salesman.email}</td>
                 <td>
                   <Actions>
-                    <Link to={`company/edit/${company.id}`}>
+                    <Link to={`salesman/edit/${salesman.id}`}>
                       <FiEdit size="24" />
                     </Link>
                     <button
                       type="button"
-                      onClick={() => deleteCompany(company.id)}
+                      onClick={() => deleteSalesman(salesman.id)}
                     >
                       <FiTrash size="24" />
                     </button>

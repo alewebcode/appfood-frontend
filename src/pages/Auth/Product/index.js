@@ -80,10 +80,8 @@ export default function Product() {
       <Header>
         <strong>Produtos</strong>
         <Link to="product/create">
-          {/* <button type="button"> */}
           <FiPlusCircle />
           <span>Novo</span>
-          {/* </button> */}
         </Link>
       </Header>
       <SearchFilter

@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import { Form as Unform } from '@unform/web';
 
-export const Container = styled.div``;
+export const Container = styled.div`
+  width: 100%;
+`;
 
 export const Header = styled.div`
   display: flex;
@@ -35,30 +37,6 @@ export const Header = styled.div`
       padding: 0.5rem;
     }
   }
-  /* a {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    justify-content: space-between;
-
-    font-size: 1rem;
-    color: #fff;
-    background: #6b7a99;
-    border: 0;
-    border-radius: 1rem;
-    padding: 0 2rem;
-    height: 2rem;
-
-    transition: filter 0.5s;
-
-    &:hover {
-      filter: brightness(1.2);
-    }
-
-    span {
-      padding: 0.5rem;
-    }
-  } */
 `;
 export const Content = styled.div`
   max-width: 1120px;
@@ -116,16 +94,6 @@ export const Form = styled(Unform)`
     outline: none;
   }
 `;
-
-// export const Input = styled.input`
-//   /* display: block; */
-//   height: 3rem;
-//   padding: 0 1rem;
-//   border: 1px solid #d3e2e5;
-//   border-radius: 20px;
-//   width: ${props => (props.width ? props.width : 'auto')};
-//   outline: none;
-// `;
 
 export const FormGroup = styled.div`
   label {

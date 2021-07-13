@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
   FiPlusCircle,
   FiEdit,
-  FiTrash,
   FiChevronRight,
   FiChevronLeft,
 } from 'react-icons/fi';
 import { toast } from 'react-toastify';
-import api from '../../../services/api';
+
 import { SearchFilter } from '../../../components/Auth/SearchFilter';
+import api from '../../../services/api';
 
 import {
   Container,
@@ -23,20 +23,48 @@ import {
   PaginationAction,
   PaginationNumber,
 } from './styles';
+import { ToogleSwitch } from '../../../components/Auth/ToogleSwitch';
 
-export default function Company() {
-  const history = useHistory();
-  const [companies, setCompanies] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [search, setSearch] = useState('');
+export default function User() {
+  // const history = useHistory();
+  const [users, setUsers] = useState([]);
   const [total, setTotal] = useState(0);
   const [pages, setPages] = useState([]);
-  const limit = 10;
+  const [currentPage, setCurrentPage] = useState(1);
+  // eslint-disable-next-line no-unused-vars
+  const [isChecked, setChecked] = useState(false);
+
+  const [search, setSearch] = useState('');
+  const limit = 5;
+
+  async function handleCheck(user) {
+    // setChecked(prevState => !prevState);
+    if (user.active) {
+      const confirmBox = window.confirm(
+        'Tem certeza que deseja desativar o usuário?'
+      );
+      if (confirmBox === true) {
+        try {
+          await api.put(`/users/inactivate/${user.id}`);
+          toast.success('Usuário inativado com sucesso');
+        } catch (err) {
+          toast.danger('Não foi possível efetuar a inativação');
+        }
+      }
+    } else {
+      try {
+        await api.put(`/users/activate/${user.id}`);
+        toast.success('Usuário ativado com sucesso');
+      } catch (err) {
+        toast.danger('Não foi possível efetuar a ativação');
+      }
+    }
+  }
 
   useEffect(() => {
-    async function loadCompanies() {
+    async function loadUsers() {
       const response = await api.get(
-        `/companies?page=${currentPage}&limit=${limit}`
+        `/users?page=${currentPage}&limit=${limit}`
       );
 
       setTotal(response.data.totalResults);
@@ -50,38 +78,27 @@ export default function Company() {
       }
 
       setPages(arrPages);
-      setCompanies(response.data.companies);
+
+      setUsers(response.data.users);
 
       if (search) {
         const filters = await api.get(
-          `/companies?filter=${search.toLowerCase()}&page=${currentPage}&limit=${limit}`
+          `/users?filter=${search.toLowerCase()}&page=${currentPage}&limit=${limit}`
         );
-        setCompanies(filters.data.companies);
+        setUsers(filters.data.users);
       }
     }
 
-    loadCompanies();
-  }, []);
-
-  async function deleteCompany(id) {
-    const index = companies.findIndex(element => element.id === id);
-
-    await api.delete(`/companies/${id}`);
-
-    setCompanies(companies.splice(index));
-
-    toast.success('Excluído com sucesso');
-
-    history.push('/auth/companies');
-  }
+    loadUsers();
+  }, [currentPage, total, search]);
 
   return (
     <Container>
       <Header>
-        <strong>Empresas</strong>
-        <Link to="company/create">
+        <strong>Usuários</strong>
+        <Link to="user/create">
           <FiPlusCircle />
-          <span>Novo</span>
+          <span>Novo {isChecked}</span>
         </Link>
       </Header>
       <SearchFilter
@@ -94,29 +111,28 @@ export default function Company() {
         <Table>
           <thead>
             <tr>
-              <th>Empresa</th>
-              <th>Telefone</th>
+              <th>Nome</th>
               <th>Email</th>
-              <th>Ações</th>
+              <th>Tipo usuário</th>
+              <th>Ações </th>
             </tr>
           </thead>
           <tbody>
-            {companies.map(company => (
-              <tr key={company.id}>
-                <td>{company.name}</td>
-                <td>{company.phone}</td>
-                <td>{company.email}</td>
+            {users.map(user => (
+              <tr key={user.id}>
+                <td>{user.name}</td>
+                <td>{user.email}</td>
+                <td>{user.user_type.name}</td>
+
                 <td>
                   <Actions>
-                    <Link to={`company/edit/${company.id}`}>
+                    <Link to={`user/edit/${user.id}`}>
                       <FiEdit size="24" />
                     </Link>
-                    <button
-                      type="button"
-                      onClick={() => deleteCompany(company.id)}
-                    >
-                      <FiTrash size="24" />
-                    </button>
+                    <ToogleSwitch
+                      isToogle={user.active}
+                      onClick={() => handleCheck(user)}
+                    />
                   </Actions>
                 </td>
               </tr>

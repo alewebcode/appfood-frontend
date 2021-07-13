@@ -43,7 +43,6 @@ export default function ImageInput({ name, ...rest }) {
         setPreview(null);
       },
       setValue(value) {
-        // console.log('oi');
         setPreview(value);
       },
     });
@@ -58,7 +57,7 @@ export default function ImageInput({ name, ...rest }) {
             Adicionar Logo
           </div>
         ) : (
-          <img src={preview} alt="Preview" width="150" />
+          <img src={preview} alt="Preview" width="240" />
         )}
 
         <input

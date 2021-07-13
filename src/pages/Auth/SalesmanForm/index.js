@@ -5,11 +5,9 @@ import { FiArrowLeft } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 
 import Input from '../../../components/Form/Input';
-import Checkbox from '../../../components/Form/Checkbox';
 import Select from '../../../components/Form/Select';
 import api from '../../../services/api';
 import 'react-toastify/dist/ReactToastify.min.css';
-import Logo from './LogoInput';
 
 import {
   Container,
@@ -23,14 +21,13 @@ import {
   // SelectStyled,
 } from './styles';
 
-export default function CompanyForm({ match }) {
+export default function SalesmanForm({ match }) {
   const formRef = useRef(null);
   const history = useHistory();
   const { id } = match.params;
   const isAdd = !id;
 
   const [initialData, setInitialData] = useState([]);
-  const [optionsSelect, setoptionsSelect] = useState([]);
 
   const optionsState = [
     { label: 'Acre', value: 'AC' },
@@ -63,80 +60,26 @@ export default function CompanyForm({ match }) {
   ];
 
   useEffect(() => {
-    async function loadCompany() {
+    async function loadSalesman() {
       if (!isAdd) {
-        const response = await api.get(`/companies/${id}`);
-
-        response.data.segment = response.data.segment.id;
-
+        const response = await api.get(`/salesmans/${id}`);
         setInitialData(response.data);
       }
     }
-    async function loadSegments() {
-      const response = await api.get(`/segments?page=0&limit=0`);
 
-      const segments = response.data.segments.map(value => {
-        const option = {};
-        option.label = value.name;
-        option.value = value.id;
-
-        return option;
-      });
-
-      setoptionsSelect(segments);
-    }
-
-    loadCompany();
-    loadSegments();
+    loadSalesman();
   }, []);
 
   async function handleSubmit(data) {
-    const formData = new FormData();
     if (isAdd) {
-      formData.append('name', data.name);
-      formData.append('logo', data.logo);
-      formData.append('trading_name', data.trading_name);
-      formData.append('cnpj', data.cnpj);
-      formData.append('state_registration', data.state_registration);
-      formData.append('zip_code', data.zip_code);
-      formData.append('street', data.street);
-      formData.append('number', data.number);
-      formData.append('complement', data.complement);
-      formData.append('neighborhood', data.neighborhood);
-      formData.append('city', data.city);
-      formData.append('state', data.state);
-      formData.append('phone', data.phone);
-      formData.append('email', data.email);
-      formData.append('delivery', data.delivery);
-      formData.append('pickup_in_place', data.pickup_in_place);
-      formData.append('segment', data.segment);
-
       try {
-        await api.post('/companies', formData);
+        await api.post('/salesmans', data);
         toast.success('Cadastro efetuado com sucesso');
       } catch (err) {
         toast.danger('Não foi possível efetuar o cadastro');
       }
     } else {
-      formData.append('name', data.name);
-      formData.append('logo', data.logo);
-      formData.append('trading_name', data.trading_name);
-      formData.append('cnpj', data.cnpj);
-      formData.append('state_registration', data.state_registration);
-      formData.append('zip_code', data.zip_code);
-      formData.append('street', data.street);
-      formData.append('number', data.number);
-      formData.append('complement', data.complement);
-      formData.append('neighborhood', data.neighborhood);
-      formData.append('city', data.city);
-      formData.append('state', data.state);
-      formData.append('phone', data.phone);
-      formData.append('email', data.email);
-      formData.append('delivery', String(data.delivery));
-      formData.append('pickup_in_place', data.pickup_in_place);
-      formData.append('segment', data.segment);
-
-      await api.put(`/companies/${id}`, formData);
+      await api.put(`/salesmans/${id}`, data);
 
       toast.success('Atualizado com sucesso');
     }
@@ -145,7 +88,7 @@ export default function CompanyForm({ match }) {
   return (
     <Container>
       <Header>
-        <strong>Cadastrar Empresa</strong>
+        <strong>Cadastrar Vendedor</strong>
         <button type="button" onClick={() => history.goBack()}>
           <FiArrowLeft />
           <span>Voltar</span>
@@ -156,31 +99,32 @@ export default function CompanyForm({ match }) {
           ref={formRef}
           initialData={initialData}
           onSubmit={handleSubmit}
-          id="formCompany"
+          id="formSalesman"
         >
-          <FormGroup>
-            <Logo name="logo" />
-          </FormGroup>
           <FormGroup>
             <label htmlFor="name">Nome</label>
             <Input type="text" name="name" />
           </FormGroup>
 
           <FormGroup>
-            <label htmlFor="trading_name">Razão social</label>
-            <Input name="trading_name" />
+            <label htmlFor="birthdate">Data de nascimento</label>
+            <Input name="birthdate" />
           </FormGroup>
           <FormInline>
             <FormGroup>
-              <label htmlFor="cnpj">CNPJ</label>
-              <Input name="cnpj" />
+              <label htmlFor="cpf">CPF</label>
+              <Input name="cpf" />
             </FormGroup>
 
             <FormGroup>
-              <label htmlFor="state_registration">Incrição estadual</label>
-              <Input name="state_registration" />
+              <label htmlFor="phone">Telefone</label>
+              <Input name="phone" />
             </FormGroup>
           </FormInline>
+          <FormGroup>
+            <label htmlFor="email">Email</label>
+            <Input name="email" />
+          </FormGroup>
           <FormInline>
             <FormGroup>
               <label htmlFor="zip_code">CEP</label>
@@ -232,45 +176,11 @@ export default function CompanyForm({ match }) {
               )}
             </FormGroup>
           </FormInline>
-
-          <FormGroup>
-            <label htmlFor="phone">Telefone</label>
-            <Input name="phone" />
-          </FormGroup>
-
-          <FormGroup>
-            <label htmlFor="email">Email</label>
-            <Input name="email" />
-          </FormGroup>
-          <FormGroup>
-            <label htmlFor="segment">Segmento</label>
-
-            {optionsSelect.length && (
-              <Select
-                name="segment"
-                options={optionsSelect}
-                placeholder="Selecione"
-              />
-            )}
-          </FormGroup>
-          <FormInline>
-            <FormGroup>
-              <label htmlFor="delivery">
-                <Checkbox name="delivery" /> Delivery
-              </label>
-            </FormGroup>
-            <FormGroup>
-              <label htmlFor="pickup_in_place">
-                <Checkbox name="pickup_in_place" />
-                Retirada no local
-              </label>
-            </FormGroup>
-          </FormInline>
         </Form>
       </Content>
 
       <SubmitButton>
-        <button type="submit" form="formCompany">
+        <button type="submit" form="formSalesman">
           Salvar
         </button>
       </SubmitButton>
@@ -278,10 +188,10 @@ export default function CompanyForm({ match }) {
   );
 }
 
-CompanyForm.defaultProps = {
+SalesmanForm.defaultProps = {
   match: '',
 };
-CompanyForm.propTypes = {
+SalesmanForm.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string,

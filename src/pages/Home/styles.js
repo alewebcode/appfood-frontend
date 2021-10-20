@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const Banner = styled.div`
   width: 100%;
   display: flex;
+  margin-top: 6rem;
   justify-content: center;
   /* display: grid;
   grid-template-columns: 1fr 1fr 1fr; */

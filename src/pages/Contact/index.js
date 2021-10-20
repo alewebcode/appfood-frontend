@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Content, BannerTitle, Form } from './styles';
+import { Content, Container, Form } from './styles';
 
 import api from '../../services/api';
 
@@ -24,11 +24,9 @@ export default function Contact() {
   }
 
   return (
-    <>
-      <BannerTitle>
-        <h1>Fale conosco</h1>
-      </BannerTitle>
+    <Container>
       <Content>
+        <title>Contato</title>
         <Form onSubmit={handleSubmit}>
           <label htmlFor="name">Nome</label>
           <input
@@ -64,11 +62,11 @@ export default function Contact() {
           >
             Mensagem
           </label>
-          <textarea id="message" />
+          <textarea id="message" name="message" />
 
           <button type="submit">Enviar</button>
         </Form>
       </Content>
-    </>
+    </Container>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import {
   FiPlusCircle,
@@ -24,6 +24,7 @@ import {
   PaginationNumber,
 } from './styles';
 import { ToogleSwitch } from '../../../components/Auth/ToogleSwitch';
+import { AuthContext } from '../../../contexts/auth';
 
 export default function User() {
   // const history = useHistory();
@@ -35,7 +36,8 @@ export default function User() {
   const [isChecked, setChecked] = useState(false);
 
   const [search, setSearch] = useState('');
-  const limit = 5;
+  const limit = 10;
+  const { authenticated } = useContext(AuthContext);
 
   async function handleCheck(user) {
     // setChecked(prevState => !prevState);
@@ -64,7 +66,7 @@ export default function User() {
   useEffect(() => {
     async function loadUsers() {
       const response = await api.get(
-        `/users?page=${currentPage}&limit=${limit}`
+        `/users?page=${currentPage}&limit=${limit}&referral_code=${authenticated.user.referral_code}`
       );
 
       setTotal(response.data.totalResults);
@@ -83,7 +85,9 @@ export default function User() {
 
       if (search) {
         const filters = await api.get(
-          `/users?filter=${search.toLowerCase()}&page=${currentPage}&limit=${limit}`
+          `/users?filter=${search.toLowerCase()}&page=${currentPage}&limit=${limit}&referral_code=${
+            authenticated.user.referral_code
+          }`
         );
         setUsers(filters.data.users);
       }

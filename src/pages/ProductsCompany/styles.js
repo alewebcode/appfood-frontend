@@ -56,10 +56,12 @@ export const ListItems = styled.div`
     background: #fff;
     border-radius: 0.5rem;
     border: 1px solid #e6e7e8;
+    text-decoration: none;
+    position: relative;
 
     &:hover {
       border: 1px solid #ccc;
-      cursor: pointer;
+      //cursor: pointer;
     }
 
     img {
@@ -68,6 +70,18 @@ export const ListItems = styled.div`
       object-fit: cover;
       margin-top: 0.5rem;
       margin-right: 0.5rem;
+    }
+
+    button {
+      position: absolute;
+      top: 10rem;
+      left: 24.5rem;
+      padding: 0.3rem;
+      border: none;
+      background: #27ae60;
+      color: #fff;
+      width: 7rem;
+      border-radius: 0.5rem;
     }
   }
 `;
@@ -99,12 +113,18 @@ export const ProductInfo = styled.div`
   }
 
   p {
+    span {
+      color: #fff;
+      font-size: 0.8rem;
+      margin-right: 0.8rem;
+    }
     background: #f4511e;
     color: #fff;
     margin-top: 1rem;
     margin-left: 1rem;
-    width: 15rem;
+    width: 13rem;
     padding: 0.3rem;
     text-align: center;
+    font-size: 0.8rem;
   }
 `;

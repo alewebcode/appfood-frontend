@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { FiArrowLeft } from 'react-icons/fi';
@@ -10,6 +10,7 @@ import Select from '../../../components/Form/Select';
 import api from '../../../services/api';
 import 'react-toastify/dist/ReactToastify.min.css';
 import ImageInput from './ImageInput';
+import { AuthContext } from '../../../contexts/auth';
 
 import {
   Container,
@@ -29,6 +30,7 @@ export default function ProductForm({ match }) {
 
   const [initialData, setInitialData] = useState([]);
   const [optionsSelect, setoptionsSelect] = useState([]);
+  const { authenticated } = useContext(AuthContext);
 
   useEffect(() => {
     async function loadProducts() {
@@ -66,7 +68,7 @@ export default function ProductForm({ match }) {
       formData.append('description', data.description);
       formData.append('price', data.price);
       formData.append('category', data.category);
-      formData.append('company', 1); // somente teste
+      formData.append('user', authenticated.user.referral_code); // somente teste
 
       try {
         await api.post('/products', formData);
@@ -80,7 +82,7 @@ export default function ProductForm({ match }) {
       formData.append('description', data.description);
       formData.append('price', data.price);
       formData.append('category', data.category);
-      formData.append('company', 1); // somente teste
+      // formData.append('company', 1); // somente teste
 
       await api.put(`/products/${id}`, formData);
 

@@ -41,17 +41,6 @@ export const NavMenu = styled.nav`
   display: flex;
   width: 100%;
   justify-content: center;
-
-  /* ul {
-    list-style: none;
-    display: flex;
-  }
-
-  li a {
-    color: #fff;
-    text-decoration: none;
-    padding: 1rem;
-  } */
 `;
 
 export const Logo = styled.div`

@@ -9,7 +9,9 @@ export const Header = styled.div`
   display: flex;
   justify-content: space-between;
 
-  padding: 2rem 8rem 1rem;
+  padding: 2rem 0rem 1rem;
+  max-width: 1120px;
+  margin: 0 auto;
 
   strong {
     color: #6b7a99;
@@ -81,7 +83,8 @@ export const Content = styled.div`
 export const SubmitButton = styled.div`
   display: flex;
   justify-content: center;
-  padding: 1rem;
+  padding: 2rem 0rem 1rem;
+  max-width: 1120px;
 
   button {
     font-size: 1rem;
@@ -156,6 +159,10 @@ export const FormInline = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
+
+  @media only screen and (max-device-width: 768px) {
+    flex-direction: column;
+  }
 
   /* padding: 0 0 1rem; */
 `;

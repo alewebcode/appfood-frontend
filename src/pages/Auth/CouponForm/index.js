@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { FiArrowLeft } from 'react-icons/fi';
@@ -17,6 +17,7 @@ import {
   Form,
   FormGroup,
 } from './styles';
+import { AuthContext } from '../../../contexts/auth';
 
 export default function CouponForm({ match }) {
   const formRef = useRef(null);
@@ -26,6 +27,7 @@ export default function CouponForm({ match }) {
 
   const [initialData, setInitialData] = useState([]);
   const [products, setProducts] = useState([]);
+  const { authenticated } = useContext(AuthContext);
 
   useEffect(() => {
     async function loadCoupon() {
@@ -38,7 +40,9 @@ export default function CouponForm({ match }) {
       }
     }
     async function loadProducts() {
-      const response = await api.get(`/products?page=0&limit=0`);
+      const response = await api.get(
+        `/products?page=0&limit=0&referral_code=${authenticated.user.referral_code}`
+      );
 
       const data = response.data.products.map(value => {
         const option = {};

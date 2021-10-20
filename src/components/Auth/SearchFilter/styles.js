@@ -2,8 +2,10 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   display: flex;
-  padding: 1rem 8rem 1rem;
+  padding: 1rem 0rem 1rem;
   align-items: center;
+  margin: 0 auto;
+  max-width: 1120px;
 `;
 
 export const Search = styled.input`

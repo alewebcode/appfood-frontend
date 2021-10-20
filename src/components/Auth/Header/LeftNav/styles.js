@@ -1,17 +1,11 @@
 import styled from 'styled-components';
 
 export const Ul = styled.ul`
-  /* display: flex;
-  width: 100%;
-  justify-content: center; */
-
   list-style: none;
   display: flex;
-
-  /* li {
-    display: flex;
-    padding: 0 1rem;
-  } */
+  width: 100%;
+  justify-content: center;
+  align-items: center;
 
   li a {
     color: #fff;
@@ -31,7 +25,7 @@ export const Ul = styled.ul`
   @media (max-width: 768px) {
     display: ${({ open }) => (!open ? 'none' : 'block')};
     flex-flow: column nowrap;
-    background: #e9ecef;
+    background: #fafcfc;
     position: fixed;
     transform: ${({ open }) => (open ? 'translateX(0)' : 'translateX(100%)')};
     top: 0;
@@ -97,6 +91,7 @@ export const DropDownList = styled(Ul)`
   }
   li a {
     color: #afa9a8;
+    padding: 0.5rem;
   }
 
   @media (max-width: 768px) {
@@ -128,5 +123,24 @@ export const Tooltip = styled.li`
   @media (max-width: 768px) {
     cursor: pointer;
     transition-delay: 0.5s;
+  }
+`;
+export const MenuUser = styled.div`
+  position: relative;
+  cursor: pointer;
+  display: flex;
+
+  @media (max-width: 768px) {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  img {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    border: 2px solid #ff8f35;
+
+    /* background: #fff; */
   }
 `;

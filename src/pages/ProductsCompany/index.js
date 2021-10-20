@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+// import Modal from 'react-modal';
 
 import { Content, Container, Logo, ListItems, ProductInfo } from './styles';
 import api from '../../services/api';
+import { CartContext } from '../../contexts/cart';
 
 export default function ProductsCompany() {
+  const { addCart } = useContext(CartContext);
   const location = useLocation();
   const [company, setCompany] = useState([]);
   const [coupons, setCoupons] = useState([]);
-  // const [products, setProducts] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  // const uploads = 'http://192.168.0.102:3333/uploads';
-  const uploads = 'https://appfood-backend.herokuapp.com/uploads';
+  const uploads = 'http://192.168.0.102:3333/uploads';
 
   useEffect(() => {
     setCompany(location.company);
-
     async function loadProducts() {
       const response = await api.get(
         `/coupons/products/${location.company.id}`
@@ -26,9 +26,11 @@ export default function ProductsCompany() {
     }
 
     loadProducts();
-
-    // console.log(company);
   }, []);
+  function handleAddToCart(product) {
+    product.company = company.id;
+    addCart(product);
+  }
 
   return (
     <Container>
@@ -43,6 +45,7 @@ export default function ProductsCompany() {
           ) : (
             coupons.map(coupon => (
               <div key={coupon.id}>
+                {/* <Link to="/#/" onClick={OpenAddProductModal}> */}
                 <ProductInfo>
                   <h1>{coupon.product.name}</h1>
                   <span>{coupon.product.description}</span>
@@ -53,7 +56,8 @@ export default function ProductsCompany() {
                     }).format(coupon.product.price)}
                   </h6>
                   <p>
-                    {coupon.coupon_code} |{' '}
+                    <span>Cupom</span>
+                    {coupon.coupon_code} |
                     {new Intl.NumberFormat('pt-BR', {
                       style: 'currency',
                       currency: 'BRL',
@@ -62,6 +66,11 @@ export default function ProductsCompany() {
                 </ProductInfo>
 
                 <img src={`${uploads}/${coupon.product.image}`} alt="product" />
+
+                <button type="button" onClick={() => handleAddToCart(coupon)}>
+                  Adicionar
+                </button>
+                {/* </Link> */}
               </div>
             ))
           )}

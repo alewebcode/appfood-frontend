@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import {
   FiPlusCircle,
@@ -23,6 +23,7 @@ import {
   PaginationAction,
   PaginationNumber,
 } from './styles';
+import { AuthContext } from '../../../contexts/auth';
 
 export default function Coupon() {
   const history = useHistory();
@@ -31,13 +32,14 @@ export default function Coupon() {
   const [pages, setPages] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState('');
+  const { authenticated } = useContext(AuthContext);
   // const [limit, setLimit] = useState(5);
   const limit = 10;
 
   useEffect(() => {
     async function loadCoupons() {
       const response = await api.get(
-        `/coupons?page=${currentPage}&limit=${limit}`
+        `/coupons?page=${currentPage}&limit=${limit}&referral_code=${authenticated.user.referral_code}`
       );
 
       setTotal(response.data.totalResults);
@@ -55,7 +57,9 @@ export default function Coupon() {
 
       if (search) {
         const filters = await api.get(
-          `/coupons?filter=${search.toLowerCase()}&page=${currentPage}&limit=${limit}`
+          `/coupons?filter=${search.toLowerCase()}&page=${currentPage}&limit=${limit}&referral_code=${
+            authenticated.user.referral_code
+          }`
         );
         setCoupons(filters.data.coupons);
       }

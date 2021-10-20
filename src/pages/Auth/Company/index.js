@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import {
   FiPlusCircle,
@@ -10,6 +10,7 @@ import {
 import { toast } from 'react-toastify';
 import api from '../../../services/api';
 import { SearchFilter } from '../../../components/Auth/SearchFilter';
+import { AuthContext } from '../../../contexts/auth';
 
 import {
   Container,
@@ -32,11 +33,12 @@ export default function Company() {
   const [total, setTotal] = useState(0);
   const [pages, setPages] = useState([]);
   const limit = 10;
+  const { authenticated } = useContext(AuthContext);
 
   useEffect(() => {
     async function loadCompanies() {
       const response = await api.get(
-        `/companies?page=${currentPage}&limit=${limit}`
+        `/companies?page=${currentPage}&limit=${limit}&user_referral=${authenticated.user.referral_code}`
       );
 
       setTotal(response.data.totalResults);
@@ -54,14 +56,16 @@ export default function Company() {
 
       if (search) {
         const filters = await api.get(
-          `/companies?filter=${search.toLowerCase()}&page=${currentPage}&limit=${limit}`
+          `/companies?filter=${search.toLowerCase()}&page=${currentPage}&limit=${limit}&user_referral=${
+            authenticated.user.referral_code
+          }`
         );
         setCompanies(filters.data.companies);
       }
     }
 
     loadCompanies();
-  }, []);
+  }, [currentPage, total, search]);
 
   async function deleteCompany(id) {
     const index = companies.findIndex(element => element.id === id);

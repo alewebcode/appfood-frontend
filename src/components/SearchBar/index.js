@@ -26,11 +26,11 @@ export default function SearchBar() {
 
   useEffect(() => {
     async function loadInitialItems() {
-      const response = await api.get('/companies/filterCities');
+      const response = await api.get('/cities');
 
       const options = response.data.map(city => ({
-        value: city.city,
-        label: city.city,
+        slug: city.slug,
+        label: city.name,
       }));
 
       setOptions(options);
@@ -50,7 +50,9 @@ export default function SearchBar() {
     );
 
   function loadOptions(selectData_, cb) {
-    cb(filterOptions(selectData_));
+    setTimeout(() => {
+      cb(filterOptions(selectData_));
+    }, 3000);
   }
 
   function handleChange(newValue) {
@@ -59,7 +61,7 @@ export default function SearchBar() {
 
   function searchCompanies() {
     history.push({
-      pathname: '/ListCompanies',
+      pathname: `/lista-lojas/${selectData.slug}`,
       state: { selectedCity: selectData, cities: initialOptions },
     });
   }
@@ -76,6 +78,7 @@ export default function SearchBar() {
           value={selectData}
           styles={customStyles}
           placeholder="Buscar cidade"
+          noOptionsMessage={() => 'Sem dados'}
         />
         <button type="button" onClick={searchCompanies}>
           BUSCAR

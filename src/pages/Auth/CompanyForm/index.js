@@ -194,7 +194,7 @@ export default function CompanyForm({ match }) {
 
             <FormGroup>
               <label htmlFor="number">Nº</label>
-              <Input name="number" width="200px" />
+              <Input name="number" />
             </FormGroup>
           </FormInline>
           <FormInline>

@@ -1,100 +1,105 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, Link } from 'react-router-dom';
-import Select from './Select';
-
-import { BannerTitle, Content, Container, Form, ListItems } from './styles';
+import React, { useEffect, useState, useContext } from 'react';
+import { useParams } from 'react-router-dom';
+// import Select from './Select';
+import { CartContext } from '../../contexts/cart';
+import { Content, Container, Form, ListItems, ProductInfo } from './styles';
 import { SearchFilter } from './SearchFilter';
 import api from '../../services/api';
+import Loading from '../../components/Loading';
 
 export default function ListCompanies() {
-  // const formRef = useRef(null);
-
-  const [options, setOptions] = useState([]);
-  const [selectedCity, setSelectedCity] = useState([]);
-  const [companies, setCompanies] = useState([]);
+  const { addCart } = useContext(CartContext);
+  const { slug } = useParams();
+  const [products, setProducts] = useState([]);
   const [search, setSearch] = useState('');
-  const location = useLocation();
-  const [isLoaded, setIsLoaded] = useState(false);
-  // const uploads = 'http://192.168.0.102:3333/uploads';
-  const uploads = 'https://appfood-backend.herokuapp.com/uploads';
+  const [loading, setIsLoading] = useState(false);
+  const uploads = 'http://192.168.0.103:3333/uploads';
+  // const uploads = 'https://appfood-backend.herokuapp.com/uploads';
 
   useEffect(() => {
-    setOptions(location.state.cities);
-    setSelectedCity(location.state.selectedCity);
+    // setOptions(location.state.cities);
 
     async function loadCompanies() {
-      const response = await api.get(
-        `/companies/searchCompanies?filterCity=${location.state.selectedCity.value}`
-      );
+      const response = await api.get(`/companies/searchCompanies?slug=${slug}`);
 
-      setCompanies(response.data);
-      setIsLoaded(true);
+      setProducts(response.data);
+      // setIsLoaded(true);
 
       if (search) {
+        setIsLoading(true);
         const filters = await api.get(
-          `/companies/searchCompanies?filterCompany=${search.toLowerCase()}`
+          `/companies/searchCompanies?filterProductCompany=${search.toLowerCase()}`
         );
 
-        setCompanies(filters.data);
+        setProducts(filters.data);
+
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 3000);
       }
     }
 
     loadCompanies();
   }, [search]);
 
-  async function changeCity(event) {
-    setSelectedCity(event);
-    const response = await api.get(
-      `/companies/searchCompanies?filterCity=${event.value}`
-    );
-
-    setCompanies(response.data);
+  function handleAddToCart(product) {
+    addCart(product);
   }
 
   return (
-    <>
-      <BannerTitle>
-        <h1>LOJAS DISPONÍVEIS</h1>
-      </BannerTitle>
-      <Container>
-        <Content>
-          <Form>
-            <label htmlFor="nome">Cidade</label>
-            <Select
-              name="nome"
-              options={options}
-              value={selectedCity}
-              onChange={changeCity}
-            />
-
-            <SearchFilter
-              onSearch={value => {
-                setSearch(value);
-              }}
-            />
-          </Form>
+    <Container>
+      <Content>
+        <title>Produtos </title>
+        <Form>
+          <SearchFilter
+            onSearch={value => {
+              setSearch(value);
+            }}
+          />
+        </Form>
+        {loading ? (
+          <Loading loading={loading} />
+        ) : (
           <ListItems>
-            {!isLoaded ? (
-              <p>Carregando...</p>
-            ) : (
-              companies.map(company => (
-                <Link
-                  to={{
-                    pathname: '/products/company',
-                    company,
-                  }}
-                >
-                  <div key={company.id}>
-                    <img src={`${uploads}/${company.logo}`} alt="logo" />
-                    <h1>{company.name}</h1>
-                    <span>{company.segment.description}</span>
-                  </div>
-                </Link>
-              ))
-            )}
+            {products.map(product => (
+              <div key={product.product_id}>
+                {/* <Link to="/#/" onClick={OpenAddProductModal}> */}
+                <ProductInfo>
+                  <span className="company">{product.companies_name}</span>
+                  <h1>{product.product_name}</h1>
+                  <span className="description">
+                    {product.product_description}
+                  </span>
+                  <h6>
+                    {new Intl.NumberFormat('pt-BR', {
+                      style: 'currency',
+                      currency: 'BRL',
+                    }).format(product.product_price)}
+                  </h6>
+                  <p>
+                    <span>Cupom</span>
+                    {product.coupon_code} |
+                    {new Intl.NumberFormat('pt-BR', {
+                      style: 'currency',
+                      currency: 'BRL',
+                    }).format(product.coupon_amount)}
+                  </p>
+                </ProductInfo>
+
+                <img
+                  src={`${uploads}/${product.product_image}`}
+                  alt="product"
+                />
+
+                <button type="button" onClick={() => handleAddToCart(product)}>
+                  Adicionar
+                </button>
+                {/* </Link> */}
+              </div>
+            ))}
           </ListItems>
-        </Content>
-      </Container>
-    </>
+        )}
+      </Content>
+    </Container>
   );
 }

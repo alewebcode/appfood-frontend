@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import {
   FiPlusCircle,
@@ -23,6 +23,7 @@ import {
   PaginationAction,
   PaginationNumber,
 } from './styles';
+import { AuthContext } from '../../../contexts/auth';
 
 export default function Product() {
   const history = useHistory();
@@ -31,12 +32,13 @@ export default function Product() {
   const [search, setSearch] = useState('');
   const [total, setTotal] = useState(0);
   const [pages, setPages] = useState([]);
+  const { authenticated } = useContext(AuthContext);
   const limit = 10;
 
   useEffect(() => {
     async function loadProducts() {
       const response = await api.get(
-        `/products?page=${currentPage}&limit=${limit}`
+        `/products?page=${currentPage}&limit=${limit}&referral_code=${authenticated.user.referral_code}`
       );
 
       setTotal(response.data.totalResults);
@@ -54,14 +56,16 @@ export default function Product() {
 
       if (search) {
         const filters = await api.get(
-          `/products?filter=${search.toLowerCase()}&page=${currentPage}&limit=${limit}`
+          `/products?filter=${search.toLowerCase()}&page=${currentPage}&limit=${limit}&referral_code=${
+            authenticated.user.referral_code
+          }`
         );
         setProducts(filters.data.products);
       }
     }
 
     loadProducts();
-  }, []);
+  }, [search]);
 
   async function deleteProduct(id) {
     const index = products.findIndex(element => element.id === id);

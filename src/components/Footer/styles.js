@@ -5,6 +5,9 @@ export const Container = styled.div`
   background: #4f4746;
 
   margin-top: 1rem;
+  /* position: absolute; */
+  bottom: 0;
+
   /* min-width: 53rem; */
 `;
 

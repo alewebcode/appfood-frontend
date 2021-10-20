@@ -9,7 +9,9 @@ export const Header = styled.div`
   display: flex;
   justify-content: space-between;
 
-  padding: 2rem 8rem 1rem;
+  padding: 2rem 0rem 1rem;
+  max-width: 1120px;
+  margin: 0 auto;
 
   strong {
     color: #6b7a99;

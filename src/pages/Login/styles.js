@@ -49,4 +49,9 @@ export const Form = styled.form`
       filter: brightness(1.2);
     }
   }
+
+  span {
+    color: #fff;
+    padding-top: 1rem;
+  }
 `;

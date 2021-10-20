@@ -21,7 +21,7 @@ export function SearchFilter({ onSearch }) {
         name="search"
         value={search}
         onChange={e => onInputChange(e.target.value)}
-        placeholder="Buscar loja"
+        placeholder="Buscar produto ou loja"
       />
       <Icon>
         <FiSearch size={20} />

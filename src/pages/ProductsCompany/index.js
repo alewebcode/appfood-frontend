@@ -12,7 +12,8 @@ export default function ProductsCompany() {
   const [company, setCompany] = useState([]);
   const [coupons, setCoupons] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const uploads = 'http://192.168.0.102:3333/uploads';
+  // const uploads = 'http://192.168.0.102:3333/uploads';
+  const uploads = 'https://appfood-backend.herokuapp.com/uploads';
 
   useEffect(() => {
     setCompany(location.company);

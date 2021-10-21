@@ -12,7 +12,8 @@ export default function Store() {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState('');
   const [loading, setIsLoading] = useState(false);
-  const uploads = 'http://192.168.0.103:3333/uploads';
+  // const uploads = 'http://192.168.0.103:3333/uploads';
+  const uploads = 'https://appfood-backend.herokuapp.com/uploads';
 
   useEffect(() => {
     async function loadStore() {

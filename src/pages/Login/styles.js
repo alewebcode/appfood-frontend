@@ -53,5 +53,10 @@ export const Form = styled.form`
   span {
     color: #fff;
     padding-top: 1rem;
+
+    a {
+      color: #fff;
+      text-decoration: none;
+    }
   }
 `;

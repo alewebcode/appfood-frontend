@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { Form, Logo } from './styles';
 import api from '../../services/api';
 import { AuthContext } from '../../contexts/auth';
@@ -57,6 +57,9 @@ export default function Login() {
         />
 
         <button type="submit">Entrar</button>
+        <span>
+          <Link to="/registrar">Ainda não é cadastrado?cadastre-se aqui.</Link>
+        </span>
         {error ? <span>Login ou senha inválidos</span> : ''}
       </Form>
     </>

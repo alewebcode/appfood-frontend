@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Form as Unform } from '@unform/web';
 
 export const Logo = styled.div`
   display: flex;
@@ -7,7 +8,7 @@ export const Logo = styled.div`
   height: 5rem;
 `;
 
-export const Form = styled.form`
+export const Form = styled(Unform)`
   display: flex;
   flex-direction: column;
 

@@ -17,12 +17,15 @@ export default function Input({ name, ...rest }) {
   }, [fieldName, registerField]);
 
   return (
-    <input
-      id={fieldName}
-      ref={inputRef}
-      defaultValue={defaultValue}
-      {...rest}
-    />
+    <>
+      <input
+        id={fieldName}
+        ref={inputRef}
+        defaultValue={defaultValue}
+        {...rest}
+      />
+      {error && <span className="error">{error}</span>}
+    </>
   );
 }
 Input.defaultProps = {

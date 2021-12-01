@@ -49,6 +49,7 @@ function CartProvider({ children }) {
 
   const cartPopUp = () => {
     setIsCartOpen(!isCartOpen);
+    console.log(`opA${isCartOpen}`);
   };
 
   return (

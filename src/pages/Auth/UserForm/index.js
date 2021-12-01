@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { FiArrowLeft } from 'react-icons/fi';
 import { toast } from 'react-toastify';
+import * as Yup from 'yup';
 
 import Input from '../../../components/Form/Input';
 import api from '../../../services/api';
@@ -37,7 +38,33 @@ export default function UserForm({ match }) {
     loadCompany();
   }, []);
 
-  async function handleSubmit(data) {
+  async function handleSubmit(data, { reset }) {
+    try {
+      const schema = Yup.object().shape({
+        name: Yup.string().required('O nome deve ser preenchido'),
+        email: Yup.string()
+          .email('Insira um email válido')
+          .required('email deve ser preenchido'),
+        password: Yup.string().required('A senha deve ser preenchida'),
+      });
+
+      await schema.validate(data, {
+        abortEarly: false,
+      });
+
+      reset();
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const errorMessages = {};
+
+        err.inner.forEach(error => {
+          errorMessages[error.path] = error.message;
+        });
+
+        formRef.current.setErrors(errorMessages);
+      }
+      return;
+    }
     if (isAdd) {
       try {
         await api.post('/users', data);
@@ -70,18 +97,18 @@ export default function UserForm({ match }) {
         >
           <FormGroup>
             <label htmlFor="name">Nome</label>
-            <Input type="text" name="name" />
+            <Input type="text" name="name" maxlength="100" />
           </FormGroup>
 
           <FormGroup>
             <label htmlFor="email">Email</label>
-            <Input type="text" name="email" />
+            <Input type="text" name="email" maxlength="50" />
           </FormGroup>
 
           {isAdd ? (
             <FormGroup>
               <label htmlFor="password">Senha</label>
-              <Input type="password" name="password" />
+              <Input type="password" name="password" maxlength="8" />
             </FormGroup>
           ) : (
             ''

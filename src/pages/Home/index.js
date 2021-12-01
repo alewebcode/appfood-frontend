@@ -5,33 +5,33 @@ import SearchBar from '../../components/SearchBar';
 
 import { Banner } from './styles';
 
-import img1 from '../../assets/image1_banner.png';
-import img2 from '../../assets/image2_banner.png';
-import img3 from '../../assets/image3_banner.png';
+import banner1 from '../../assets/banner1.jpg';
+import banner2 from '../../assets/banner2.jpg';
+import banner3 from '../../assets/banner3.jpg';
 
 export default function Home() {
   return (
     <>
       <Banner>
         <div>
-          <Link to="/">
-            <img src={img1} alt="img1" />
+          <Link to="/lista-lojas">
+            <img src={banner1} alt="img1" />
 
-            <span>Lanches</span>
+            {/* <span>Lanches</span> */}
           </Link>
         </div>
         <div>
-          <Link to="/about">
-            <img src={img2} alt="img2" />
+          <Link to="/loja">
+            <img src={banner2} alt="img2" />
 
-            <span>Restaurantes</span>
+            {/* <span>Restaurantes</span> */}
           </Link>
         </div>
         <div>
           <Link to="/">
-            <img src={img3} alt="img3" />
+            <img src={banner3} alt="img3" />
 
-            <span>Pizzas</span>
+            {/* <span>Pizzas</span> */}
           </Link>
         </div>
       </Banner>

@@ -6,6 +6,11 @@ import { LeftNav } from '../LeftNav';
 
 export function Burger() {
   const [open, setOpen] = useState(false);
+
+  function handleCloseMenu() {
+    setOpen(!open);
+  }
+
   return (
     <>
       <MenuBurger open={open} onClick={() => setOpen(!open)}>
@@ -13,7 +18,7 @@ export function Burger() {
         <div />
         <div />
       </MenuBurger>
-      <LeftNav open={open} />
+      <LeftNav open={open} close={handleCloseMenu} />
     </>
   );
 }

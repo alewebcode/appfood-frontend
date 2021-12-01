@@ -66,20 +66,23 @@ export default function Select({ name, options, ...rest }) {
     });
   }, [fieldName, registerField, rest.isMulti]);
   return (
-    <ReactSelect
-      // cacheOptions
-      defaultValue={
+    <>
+      <ReactSelect
+        // cacheOptions
+        defaultValue={
+          // eslint-disable-next-line no-undef
+          // eslint-disable-next-line react/prop-types
+          defaultValue && options.find(option => option.value === defaultValue)
+        }
+        ref={selectRef}
+        classNamePrefix="react-select"
+        styles={customStyles}
         // eslint-disable-next-line no-undef
-        // eslint-disable-next-line react/prop-types
-        defaultValue && options.find(option => option.value === defaultValue)
-      }
-      ref={selectRef}
-      classNamePrefix="react-select"
-      styles={customStyles}
-      // eslint-disable-next-line no-undef
-      options={options}
-      {...rest}
-    />
+        options={options}
+        {...rest}
+      />
+      {error && <span className="error">{error}</span>}
+    </>
   );
 }
 

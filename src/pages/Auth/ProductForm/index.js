@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { FiArrowLeft } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 
+import * as Yup from 'yup';
 import Input from '../../../components/Form/Input';
 
 import Select from '../../../components/Form/Select';
@@ -11,6 +12,7 @@ import api from '../../../services/api';
 import 'react-toastify/dist/ReactToastify.min.css';
 import ImageInput from './ImageInput';
 import { AuthContext } from '../../../contexts/auth';
+import InputCurrency from '../../../components/Form/InputCurrency';
 
 import {
   Container,
@@ -60,8 +62,35 @@ export default function ProductForm({ match }) {
     loadProducts();
   }, []);
 
-  async function handleSubmit(data) {
+  async function handleSubmit(data, { reset }) {
     const formData = new FormData();
+
+    try {
+      const schema = Yup.object().shape({
+        name: Yup.string().required('O nome deve ser preenchido'),
+        description: Yup.string().required('A descrição deve ser preenchida'),
+        price: Yup.string().required('O preço deve ser preenchido'),
+        category: Yup.number().typeError('A categoria deve ser preenchida'),
+      });
+
+      await schema.validate(data, {
+        abortEarly: false,
+      });
+
+      reset();
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const errorMessages = {};
+
+        err.inner.forEach(error => {
+          errorMessages[error.path] = error.message;
+        });
+
+        formRef.current.setErrors(errorMessages);
+      }
+      return;
+    }
+
     if (isAdd) {
       formData.append('name', data.name);
       formData.append('image', data.image);
@@ -121,7 +150,15 @@ export default function ProductForm({ match }) {
 
           <FormGroup>
             <label htmlFor="price">Preço</label>
-            <Input name="price" />
+            <InputCurrency
+              name="price"
+              decimalScale={2}
+              decimalSeparator=","
+              fixedDecimalScale
+              thousandSeparator="."
+              prefix="$ "
+            />
+            {/* <Input name="price" /> */}
           </FormGroup>
           <FormGroup>
             <label htmlFor="category">Categoria</label>

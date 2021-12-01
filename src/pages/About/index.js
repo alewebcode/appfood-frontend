@@ -8,23 +8,14 @@ export default function About() {
       <Content>
         <span>Sobre</span>
         <p>
-          Mussum Ipsum, cacilds vidis litro abertis. Manduma pindureta quium dia
-          nois paga. Aenean aliquam molestie leo, vitae iaculis nisl. Não sou
-          faixa preta cumpadi, sou preto inteiris, inteiris. Todo mundo vê os
-          porris que eu tomo, mas ninguém vê os tombis que eu levo! Mussum
-          Ipsum, cacilds vidis litro abertis. Manduma pindureta quium dia nois
-          paga. Aenean aliquam molestie leo, vitae iaculis nisl. Não sou faixa
-          preta cumpadi, sou preto inteiris, inteiris. Todo mundo vê os porris
-          que eu tomo, mas ninguém vê os tombis que eu levo! Mussum Ipsum,
-          cacilds vidis litro abertis. Manduma pindureta quium dia nois paga.
-          Aenean aliquam molestie leo, vitae iaculis nisl. Não sou faixa preta
-          cumpadi, sou preto inteiris, inteiris. Todo mundo vê os porris que eu
-          tomo, mas ninguém vê os tombis que eu levo! Mussum Ipsum, cacilds
-          vidis litro abertis. Manduma pindureta quium dia nois paga. Aenean
-          aliquam molestie leo, vitae iaculis nisl. Não sou faixa preta cumpadi,
-          sou preto inteiris, inteiris. Todo mundo vê os porris que eu tomo, mas
-          ninguém vê os tombis que eu levo! Mussum Ipsum, cacilds vidis litro
-          abertis.
+          “Tem de Tudo” é uma plataforma criada para formar uma rede de consumo
+          inteligente, onde pessoas comuns conquistam renda fixa para consumir
+          de tudo que necessitam dentro do sistema. Aumentando seu poder de
+          consumo e qualidade de vida. Em contra partida, as empresas observam o
+          crescimento de sua carteira de clientes e venda de produtos e
+          serviços. No nosso sistema as empresas cadastradas recebem o pagamento
+          de suas vendas em dinheiro real. Para mais informações assistam os
+          vídeos tutoriais ou entrem em contato através deste site.
         </p>
       </Content>
     </Container>

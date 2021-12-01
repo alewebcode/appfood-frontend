@@ -33,14 +33,17 @@ export default function Checkbox({ name, value, ...rest }) {
   }, [defaultValue, fieldName, registerField, defaultChecked]);
 
   return (
-    <input
-      defaultChecked={defaultValue}
-      ref={inputRef}
-      value={value}
-      type="checkbox"
-      id={fieldName}
-      {...rest}
-    />
+    <>
+      <input
+        defaultChecked={defaultValue}
+        ref={inputRef}
+        value={value}
+        type="checkbox"
+        id={fieldName}
+        {...rest}
+      />
+      {error && <span className="error">{error}</span>}
+    </>
   );
 }
 Checkbox.defaultProps = {

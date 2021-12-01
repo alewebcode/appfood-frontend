@@ -120,6 +120,12 @@ export const Form = styled(Unform)`
     width: ${props => (props.width ? props.width : 'auto')};
     outline: none;
   }
+
+  span {
+    &.error {
+      color: #d00;
+    }
+  }
 `;
 
 // export const Input = styled.input`

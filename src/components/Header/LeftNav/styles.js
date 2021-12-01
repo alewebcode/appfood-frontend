@@ -143,6 +143,14 @@ export const MenuUser = styled.div`
     /* background: #fff; */
   }
 `;
+
+export const MenuActionUser = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 5rem;
+  align-items: center;
+`;
+
 export const Cart = styled.a`
   color: #fff;
   position: relative;
@@ -164,6 +172,8 @@ export const User = styled.a`
   color: #fff;
   position: relative;
   cursor: pointer;
+  align-items: center;
+  display: flex;
 `;
 export const ButtonSignUp = styled.button`
   @media (max-width: 768px) {

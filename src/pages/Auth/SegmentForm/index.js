@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { FiArrowLeft } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 
+import * as Yup from 'yup';
+
 import Input from '../../../components/Form/Input';
 import api from '../../../services/api';
 import 'react-toastify/dist/ReactToastify.min.css';
@@ -38,7 +40,31 @@ export default function SegmentForm({ match }) {
     loadCompany();
   }, []);
 
-  async function handleSubmit(data) {
+  async function handleSubmit(data, { reset }) {
+    try {
+      const schema = Yup.object().shape({
+        name: Yup.string().required('O nome deve ser preenchido'),
+        description: Yup.string().required('A descrição deve ser preenchida'),
+      });
+
+      await schema.validate(data, {
+        abortEarly: false,
+      });
+
+      reset();
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const errorMessages = {};
+
+        err.inner.forEach(error => {
+          errorMessages[error.path] = error.message;
+        });
+
+        formRef.current.setErrors(errorMessages);
+      }
+      return;
+      // setError(true);
+    }
     if (isAdd) {
       try {
         await api.post('/segments', data);
@@ -71,12 +97,12 @@ export default function SegmentForm({ match }) {
         >
           <FormGroup>
             <label htmlFor="name">Nome</label>
-            <Input type="text" name="name" />
+            <Input type="text" name="name" maxlenght="100" />
           </FormGroup>
 
           <FormGroup>
             <label htmlFor="description">Descrição</label>
-            <Input name="description" />
+            <Input name="description" maxlenght="100" />
           </FormGroup>
         </Form>
       </Content>

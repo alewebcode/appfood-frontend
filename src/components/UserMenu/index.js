@@ -6,6 +6,7 @@ import {
   FiShare2,
   FiDollarSign,
   FiLogOut,
+  FiSettings,
 } from 'react-icons/fi';
 import PropTypes from 'prop-types';
 import { AuthContext } from '../../contexts/auth';
@@ -19,6 +20,7 @@ export function UserMenu({ openMenuUser }) {
   useEffect(() => {
     setOpenMenu(openMenuUser);
   }, [openMenuUser]);
+
   async function handleLogout() {
     logout();
   }
@@ -64,6 +66,13 @@ export function UserMenu({ openMenuUser }) {
               <FiDollarSign size={18} />
 
               <span>Moeda virtual</span>
+            </Link>
+          </li>
+          <li>
+            <Link to="auth/dashboard">
+              <FiSettings size={18} />
+
+              <span>Acessar sistema</span>
             </Link>
           </li>
           <li>

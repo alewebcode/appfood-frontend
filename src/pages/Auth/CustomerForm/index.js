@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { FiArrowLeft } from 'react-icons/fi';
 import { toast } from 'react-toastify';
+import * as Yup from 'yup';
 
 import Input from '../../../components/Form/Input';
 import Select from '../../../components/Form/Select';
@@ -68,7 +69,52 @@ export default function CustomerForm({ match }) {
     loadSalesman();
   }, []);
 
-  async function handleSubmit(data) {
+  async function handleSubmit(data, { reset }) {
+    try {
+      const schema = Yup.object().shape({
+        name: Yup.string().required('O nome deve ser preenchido'),
+        birthdate: Yup.string().required(
+          'A data de nascimento deve ser preenchida'
+        ),
+        cpf: Yup.number()
+          .required()
+          .typeError('O Cpf deve ser preenchido com valor númerico')
+          .positive(),
+        phone: Yup.number()
+          .required()
+          .typeError('O telefone deve ser preenchido com valor númerico')
+          .positive(),
+        email: Yup.string()
+          .email('Insira um email válido')
+          .required('email deve ser preenchido'),
+        street: Yup.string().required('O logradouro deve ser preenchido'),
+        number: Yup.number()
+          .required()
+          .typeError('O Nº deve ser preenchido com valor númerico')
+          .positive(),
+
+        neighborhood: Yup.string().required('O bairro deve ser preenchido'),
+        city: Yup.string().required('A cidade deve ser preenchida'),
+        state: Yup.string().required('O estado deve ser preenchido'),
+      });
+
+      await schema.validate(data, {
+        abortEarly: false,
+      });
+
+      reset();
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const errorMessages = {};
+
+        err.inner.forEach(error => {
+          errorMessages[error.path] = error.message;
+        });
+
+        formRef.current.setErrors(errorMessages);
+      }
+      return;
+    }
     if (isAdd) {
       try {
         await api.post('/customers', data);
@@ -101,27 +147,27 @@ export default function CustomerForm({ match }) {
         >
           <FormGroup>
             <label htmlFor="name">Nome</label>
-            <Input type="text" name="name" />
+            <Input type="text" name="name" maxlength="100" />
           </FormGroup>
 
           <FormGroup>
             <label htmlFor="birthdate">Data de nascimento</label>
-            <Input name="birthdate" />
+            <Input name="birthdate" maxlength="10" />
           </FormGroup>
           <FormInline>
             <FormGroup>
               <label htmlFor="cpf">CPF</label>
-              <Input name="cpf" />
+              <Input name="cpf" maxlength="10" />
             </FormGroup>
 
             <FormGroup>
               <label htmlFor="phone">Telefone</label>
-              <Input name="phone" />
+              <Input name="phone" maxlength="16" />
             </FormGroup>
           </FormInline>
           <FormGroup>
             <label htmlFor="email">Email</label>
-            <Input name="email" />
+            <Input name="email" maxlength="40" />
           </FormGroup>
           <FormInline>
             <FormGroup>
@@ -131,12 +177,12 @@ export default function CustomerForm({ match }) {
 
             <FormGroup>
               <label htmlFor="street">Logradouro</label>
-              <Input name="street" width="600px" />
+              <Input name="street" width="600px" maxlength="100" />
             </FormGroup>
 
             <FormGroup>
               <label htmlFor="number">Nº</label>
-              <Input name="number" width="200px" />
+              <Input name="number" width="200px" maxlength="6" />
             </FormGroup>
           </FormInline>
           <FormInline>
@@ -147,13 +193,13 @@ export default function CustomerForm({ match }) {
 
             <FormGroup>
               <label htmlFor="neighborhood">Bairro</label>
-              <Input name="neighborhood" />
+              <Input name="neighborhood" maxlength="100" />
             </FormGroup>
           </FormInline>
           <FormInline>
             <FormGroup>
               <label htmlFor="city">Cidade</label>
-              <Input name="city" />
+              <Input name="city" maxlength="80" />
             </FormGroup>
             <FormGroup>
               <label htmlFor="state">UF</label>

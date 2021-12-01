@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { FiFileText, FiEdit2, FiShare2, FiLogOut } from 'react-icons/fi';
+import { FiShare2, FiLogOut, FiLayout } from 'react-icons/fi';
 import PropTypes from 'prop-types';
 import { AuthContext } from '../../../contexts/auth';
 
@@ -19,24 +19,17 @@ export function UserMenu({ openMenuUser }) {
         <Header>Olá, {authenticated.user.name}</Header>
         <ul>
           <li>
-            <Link to="/orders">
-              <FiFileText size={18} />
-
-              <span>Meus pedidos</span>
-            </Link>
-          </li>
-          <li>
-            <Link to="/account">
-              <FiEdit2 size={18} />
-
-              <span>Editar dados</span>
-            </Link>
-          </li>
-          <li>
             <Link to="/auth/referrals">
               <FiShare2 size={18} />
 
               <span>Indicar cliente</span>
+            </Link>
+          </li>
+          <li>
+            <Link to="/">
+              <FiLayout size={18} />
+
+              <span>Acessar Site</span>
             </Link>
           </li>
           <li>

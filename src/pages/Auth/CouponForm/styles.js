@@ -119,6 +119,11 @@ export const Form = styled(Unform)`
     width: ${props => (props.width ? props.width : 'auto')};
     outline: none;
   }
+  span {
+    &.error {
+      color: #d00;
+    }
+  }
 `;
 
 // export const Input = styled.input`
@@ -144,6 +149,11 @@ export const FormGroup = styled.div`
       display: flex;
       align-items: center;
       margin-right: 1rem;
+    }
+    span {
+      &.error {
+        color: #d00;
+      }
     }
   }
 

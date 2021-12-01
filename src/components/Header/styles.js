@@ -43,6 +43,10 @@ export const Content = styled.div`
       filter: brightness(1.2);
     }
   }
+  img {
+    width: 16.6rem;
+    height: 2.75rem;
+  }
 
   /* nav {
     display: flex;

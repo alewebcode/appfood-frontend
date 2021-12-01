@@ -2,23 +2,29 @@ import React, { useState, useContext, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { FiShoppingBag, FiUser } from 'react-icons/fi';
-import { Ul, Cart, User } from './styles';
+import { Ul, Cart, User, MenuActionUser } from './styles';
 import { UserMenu } from '../../UserMenu';
 import { AuthContext } from '../../../contexts/auth';
 import { CartContext } from '../../../contexts/cart';
 import { CartPreview } from '../../CartPreview';
 
-export function LeftNav({ open }) {
-  const { cart, cartPopUp } = useContext(CartContext);
+export function LeftNav({ open, close }) {
+  const { cart, isCartOpen } = useContext(CartContext);
   const { authenticated } = useContext(AuthContext);
   const [openMenuUser, setOpenMenuUser] = useState(false);
+  const [openCart, setOpenCart] = useState(isCartOpen);
+  // eslint-disable-next-line no-unused-vars
   const [openMenu, setOpenMenu] = useState(open);
   const cartSize = Object.keys(cart).length;
   const ref = useRef(null);
+  const ref2 = useRef(null);
 
   const handleClickOutside = event => {
     if (ref.current && !ref.current.contains(event.target)) {
       setOpenMenuUser(false);
+    }
+    if (ref2.current && !ref2.current.contains(event.target)) {
+      setOpenCart(false);
     }
   };
 
@@ -27,7 +33,7 @@ export function LeftNav({ open }) {
     return () => {
       document.removeEventListener('click', handleClickOutside, true);
     };
-  }, []);
+  }, [open]);
 
   function handleOpenMenuUser(e) {
     e.preventDefault();
@@ -36,27 +42,27 @@ export function LeftNav({ open }) {
   }
   function handleOpenCart(e) {
     e.preventDefault();
-    cartPopUp();
+    setOpenCart(!openCart);
   }
-  function handleCloseMenu() {
-    setOpenMenu(!openMenu);
-  }
+  // function handleCloseMenu() {
+  //   open.closeMenu();
+  // }
 
   return (
     <>
-      <Ul open={openMenu}>
+      <Ul open={open}>
         <li>
-          <Link to="/about" onClick={handleCloseMenu}>
+          <Link to="/about" onClick={() => close()}>
             <strong>SOBRE </strong>
           </Link>
         </li>
         <li>
-          <Link to="/contact" onClick={handleCloseMenu}>
+          <Link to="/contact" onClick={() => close()}>
             <strong>CONTATO</strong>
           </Link>
         </li>
         <li>
-          <Link to="/loja" onClick={handleCloseMenu}>
+          <Link to="/loja" onClick={() => close()}>
             <strong>LOJA</strong>
           </Link>
         </li>
@@ -76,18 +82,20 @@ export function LeftNav({ open }) {
           )}
         </li> */}
       </Ul>
-      <Cart onClick={handleOpenCart}>
-        <FiShoppingBag size={24} />
-        {cartSize > 0 && <span>{cartSize}</span>}
-        <CartPreview />
-      </Cart>
+      <MenuActionUser>
+        <Cart onClick={handleOpenCart} ref={ref2}>
+          <FiShoppingBag size={24} />
+          {cartSize > 0 && <span>{cartSize}</span>}
+          <CartPreview openCart={openCart} />
+        </Cart>
 
-      {authenticated && (
-        <User ref={ref}>
-          <FiUser size={24} onClick={handleOpenMenuUser} />
-          <UserMenu openMenuUser={openMenuUser} />
-        </User>
-      )}
+        {authenticated && (
+          <User onClick={handleOpenMenuUser} ref={ref}>
+            <FiUser size={24} />
+            <UserMenu openMenuUser={openMenuUser} />
+          </User>
+        )}
+      </MenuActionUser>
 
       {!authenticated && (
         <Link to="/login">
@@ -100,8 +108,10 @@ export function LeftNav({ open }) {
 
 LeftNav.defaultProps = {
   open: false,
+  close: null,
 };
 
 LeftNav.propTypes = {
   open: PropTypes.bool,
+  close: PropTypes.func,
 };

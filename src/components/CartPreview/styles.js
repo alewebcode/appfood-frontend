@@ -4,7 +4,7 @@ export const Cart = styled.div`
   background: #fff;
   top: 48px;
   border: 1px solid #ccc;
-  display: ${props => (props.isCartOpen ? 'block' : 'none')};
+  display: ${props => (props.openCart ? 'block' : 'none')};
   position: absolute;
   width: 25rem;
   height: 500px;
@@ -152,6 +152,7 @@ export const EmptyBag = styled.div`
     margin: 0 auto;
     object-fit: cover;
     width: 20rem;
+    height: auto;
 
     justify-content: center;
   }

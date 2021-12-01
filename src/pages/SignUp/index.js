@@ -18,7 +18,7 @@ export default function SignUp() {
   const history = useHistory();
   const location = useLocation();
 
-  async function handleSubmit(data) {
+  async function handleSubmit(data, { reset }) {
     // event.preventDefault();
 
     try {
@@ -36,6 +36,8 @@ export default function SignUp() {
       await schema.validate(data, {
         abortEarly: false,
       });
+
+      reset();
 
       const response = await api.post(
         `/customers/signUp${location.search}`,

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Banner = styled.div`
   width: 100%;
   display: flex;
-  margin-top: 6rem;
+  margin-top: 8rem;
   justify-content: center;
   /* display: grid;
   grid-template-columns: 1fr 1fr 1fr; */
@@ -36,7 +36,7 @@ export const Banner = styled.div`
     }
     img {
       width: 100%;
-      height: 20rem;
+      height: 25rem;
       object-fit: cover;
     }
     a {

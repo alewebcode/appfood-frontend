@@ -51,7 +51,7 @@ export default function Routes() {
         <Route path="/registrar" layout={AuthLayout} component={SignUp} />
         <Route path="/login" layout={AuthLayout} component={Login} />
         <Route
-          path="/lista-lojas/:slug"
+          path="/lista-lojas/:slug?"
           layout={SiteLayout}
           component={ListCompanies}
         />

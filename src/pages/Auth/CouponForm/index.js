@@ -3,11 +3,13 @@ import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { FiArrowLeft } from 'react-icons/fi';
 import { toast } from 'react-toastify';
+import * as Yup from 'yup';
 
 import Input from '../../../components/Form/Input';
 import Select from '../../../components/Form/Select';
 import api from '../../../services/api';
 import 'react-toastify/dist/ReactToastify.min.css';
+import InputCurrency from '../../../components/Form/InputCurrency';
 
 import {
   Container,
@@ -59,7 +61,34 @@ export default function CouponForm({ match }) {
     loadProducts();
   }, []);
 
-  async function handleSubmit(data) {
+  async function handleSubmit(data, { reset }) {
+    try {
+      const schema = Yup.object().shape({
+        description: Yup.string().required('A descrição deve ser preenchida'),
+        amount: Yup.string().required('O valor deve ser preenchido'),
+        coupon_code: Yup.string().required(
+          'O código de cupom deve ser preenchido'
+        ),
+        product: Yup.number().typeError('O produto deve ser preenchido'),
+      });
+
+      await schema.validate(data, {
+        abortEarly: false,
+      });
+
+      reset();
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const errorMessages = {};
+
+        err.inner.forEach(error => {
+          errorMessages[error.path] = error.message;
+        });
+
+        formRef.current.setErrors(errorMessages);
+      }
+      return;
+    }
     if (isAdd) {
       try {
         await api.post('/coupons', data);
@@ -92,27 +121,35 @@ export default function CouponForm({ match }) {
         >
           <FormGroup>
             <label htmlFor="description">Descrição</label>
-            <Input type="text" name="description" />
+            <Input type="text" name="description" maxlength="100" />
           </FormGroup>
 
           <FormGroup>
             <label htmlFor="amount">Valor</label>
-            <Input name="amount" />
+            <InputCurrency
+              name="amount"
+              decimalScale={2}
+              decimalSeparator=","
+              fixedDecimalScale
+              thousandSeparator="."
+            />
           </FormGroup>
 
           <FormGroup>
             <label htmlFor="coupon_code">Código cupom</label>
-            <Input name="coupon_code" />
+            <Input name="coupon_code" maxlength="20" />
           </FormGroup>
           <FormGroup>
             <label htmlFor="product">Produto</label>
 
-            {products.length && (
+            {products.length ? (
               <Select
                 name="product"
                 options={products}
                 placeholder="Selecione"
               />
+            ) : (
+              <Select name="product" options="" placeholder="Selecione" />
             )}
           </FormGroup>
         </Form>

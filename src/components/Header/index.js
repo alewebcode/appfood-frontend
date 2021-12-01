@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Container, Content, NavMenu } from './styles';
 import { Burger } from './Burger';
+import logo from '../../assets/logo.png';
 
 export function Header() {
   // const ref = useRef(null);
@@ -21,7 +22,7 @@ export function Header() {
   return (
     <Container>
       <Content>
-        <h2>Logo</h2>
+        <img src={logo} alt="logo" />
         <NavMenu>
           <Burger />
         </NavMenu>

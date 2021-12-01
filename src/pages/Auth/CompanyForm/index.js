@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { FiArrowLeft } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 
+import * as Yup from 'yup';
 import Input from '../../../components/Form/Input';
 import Checkbox from '../../../components/Form/Checkbox';
 import Select from '../../../components/Form/Select';
@@ -90,8 +91,77 @@ export default function CompanyForm({ match }) {
     loadSegments();
   }, []);
 
-  async function handleSubmit(data) {
+  async function handleSubmit(data, { reset }) {
     const formData = new FormData();
+
+    try {
+      const schema = Yup.object().shape({
+        name: Yup.string().required('O nome deve ser preenchido'),
+        trading_name: Yup.string().required(
+          'A razão social deve ser preenchida'
+        ),
+        cnpj: Yup.number()
+          .required()
+          .typeError('O cnpj deve ser preenchido com valor númerico ')
+          .positive(),
+
+        street: Yup.string().required('O logradouro deve ser preenchido'),
+        number: Yup.number()
+          .required()
+          .typeError('O Nº deve ser preenchido com valor númerico')
+          .positive(),
+
+        neighborhood: Yup.string().required('O bairro deve ser preenchido'),
+        city: Yup.string().required('A cidade deve ser preenchida'),
+        state: Yup.string().required('O estado deve ser preenchido'),
+        phone: Yup.number()
+          .required()
+          .typeError('O telefone ser preenchido com valor númerico')
+          .positive(),
+        email: Yup.string()
+          .email('Insira um email válido')
+          .required('email deve ser preenchido'),
+        segment: Yup.number().typeError('O segmento deve ser preenchido'),
+        delivery: Yup.boolean().required(),
+        pickup_in_place: Yup.boolean().required(),
+      });
+      schema.test(
+        // this test is added additional to any other (build-in) tests
+        'myCustomCheckboxTest',
+        null, // we'll return error message ourself if needed
+        obj => {
+          // only testing the checkboxes here
+          if (obj.red || obj.orange || obj.green) {
+            return true; // everything is fine
+          }
+
+          return new Yup.ValidationError(
+            'Check at least one checkbox',
+            null,
+            'myCustomFieldName'
+          );
+        }
+      );
+
+      await schema.validate(data, {
+        abortEarly: false,
+      });
+
+      reset();
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const errorMessages = {};
+
+        err.inner.forEach(error => {
+          errorMessages[error.path] = error.message;
+        });
+
+        formRef.current.setErrors(errorMessages);
+      }
+      return;
+      // setError(true);
+    }
+
     if (isAdd) {
       formData.append('name', data.name);
       formData.append('logo', data.logo);
@@ -115,6 +185,7 @@ export default function CompanyForm({ match }) {
         await api.post('/companies', formData);
         toast.success('Cadastro efetuado com sucesso');
       } catch (err) {
+        console.log(err.response);
         toast.danger('Não foi possível efetuar o cadastro');
       }
     } else {
@@ -163,55 +234,55 @@ export default function CompanyForm({ match }) {
           </FormGroup>
           <FormGroup>
             <label htmlFor="name">Nome</label>
-            <Input type="text" name="name" />
+            <Input type="text" name="name" maxlength="100" />
           </FormGroup>
 
           <FormGroup>
             <label htmlFor="trading_name">Razão social</label>
-            <Input name="trading_name" />
+            <Input name="trading_name" maxlength="100" />
           </FormGroup>
           <FormInline>
             <FormGroup>
               <label htmlFor="cnpj">CNPJ</label>
-              <Input name="cnpj" />
+              <Input name="cnpj" maxlength="14" />
             </FormGroup>
 
             <FormGroup>
               <label htmlFor="state_registration">Incrição estadual</label>
-              <Input name="state_registration" />
+              <Input name="state_registration" maxlength="20" />
             </FormGroup>
           </FormInline>
           <FormInline>
             <FormGroup>
               <label htmlFor="zip_code">CEP</label>
-              <Input name="zip_code" />
+              <Input name="zip_code" maxlength="10" />
             </FormGroup>
 
             <FormGroup>
               <label htmlFor="street">Logradouro</label>
-              <Input name="street" width="600px" />
+              <Input name="street" width="600px" maxlength="200" />
             </FormGroup>
 
             <FormGroup>
               <label htmlFor="number">Nº</label>
-              <Input name="number" />
+              <Input name="number" maxlength="5" />
             </FormGroup>
           </FormInline>
           <FormInline>
             <FormGroup>
               <label htmlFor="complement">Complemento</label>
-              <Input name="complement" />
+              <Input name="complement" maxlength="50" />
             </FormGroup>
 
             <FormGroup>
               <label htmlFor="neighborhood">Bairro</label>
-              <Input name="neighborhood" />
+              <Input name="neighborhood" maxlength="150" />
             </FormGroup>
           </FormInline>
           <FormInline>
             <FormGroup>
               <label htmlFor="city">Cidade</label>
-              <Input name="city" />
+              <Input name="city" maxlength="100" />
             </FormGroup>
             <FormGroup>
               <label htmlFor="state">UF</label>
@@ -235,12 +306,12 @@ export default function CompanyForm({ match }) {
 
           <FormGroup>
             <label htmlFor="phone">Telefone</label>
-            <Input name="phone" />
+            <Input name="phone" maxlength="16" />
           </FormGroup>
 
           <FormGroup>
             <label htmlFor="email">Email</label>
-            <Input name="email" />
+            <Input name="email" maxlength="50" />
           </FormGroup>
           <FormGroup>
             <label htmlFor="segment">Segmento</label>

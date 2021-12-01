@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { FiTrash } from 'react-icons/fi';
+import PropTypes from 'prop-types';
 import {
   Cart,
   CartItems,
@@ -15,8 +16,8 @@ import { CartContext } from '../../contexts/cart';
 import { formatPrice } from '../../util/format';
 import empty_bag from '../../assets/empty_bag.png';
 
-export function CartPreview() {
-  const { cart, isCartOpen, removeFromCart } = useContext(CartContext);
+export function CartPreview({ openCart }) {
+  const { cart, removeFromCart } = useContext(CartContext);
   const cartSize = Object.keys(cart).length;
 
   const totalSoma = Object.keys(cart).reduce((total, index) => {
@@ -35,9 +36,9 @@ export function CartPreview() {
     removeFromCart(product);
   }
   return (
-    <Cart isCartOpen={isCartOpen}>
+    <Cart openCart={openCart}>
       <div className="close">X</div>
-      {isCartOpen && cartSize > 0 ? (
+      {openCart && cartSize > 0 ? (
         <>
           <CartItems>
             {Object.keys(cart).map(product => (
@@ -85,3 +86,9 @@ export function CartPreview() {
     </Cart>
   );
 }
+CartPreview.defaultProps = {
+  openCart: false,
+};
+CartPreview.propTypes = {
+  openCart: PropTypes.bool,
+};

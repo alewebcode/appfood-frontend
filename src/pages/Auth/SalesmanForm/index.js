@@ -140,7 +140,7 @@ export default function SalesmanForm({ match }) {
         >
           <FormGroup>
             <label htmlFor="name">Nome</label>
-            <Input type="text" name="name" maxlength="100" />
+            <Input type="text" name="name" maxLength="100" />
           </FormGroup>
 
           <FormGroup>
@@ -150,49 +150,49 @@ export default function SalesmanForm({ match }) {
           <FormInline>
             <FormGroup>
               <label htmlFor="cpf">CPF</label>
-              <Input name="cpf" maxlength="11" />
+              <Input name="cpf" maxLength="11" />
             </FormGroup>
 
             <FormGroup>
               <label htmlFor="phone">Telefone</label>
-              <Input name="phone" maxlength="16" />
+              <Input name="phone" maxLength="16" />
             </FormGroup>
           </FormInline>
           <FormGroup>
             <label htmlFor="email">Email</label>
-            <Input name="email" maxlength="40" />
+            <Input name="email" maxLength="40" />
           </FormGroup>
           <FormInline>
             <FormGroup>
               <label htmlFor="zip_code">CEP</label>
-              <Input name="zip_code" maxlength="10" />
+              <Input name="zip_code" maxLength="10" />
             </FormGroup>
 
             <FormGroup>
               <label htmlFor="street">Logradouro</label>
-              <Input name="street" width="600px" maxlength="200" />
+              <Input name="street" width="600px" maxLength="200" />
             </FormGroup>
 
             <FormGroup>
               <label htmlFor="number">Nº</label>
-              <Input name="number" width="200px" maxlength="6" />
+              <Input name="number" width="200px" maxLength="6" />
             </FormGroup>
           </FormInline>
           <FormInline>
             <FormGroup>
               <label htmlFor="complement">Complemento</label>
-              <Input name="complement" maxlength="50" />
+              <Input name="complement" maxLength="50" />
             </FormGroup>
 
             <FormGroup>
               <label htmlFor="neighborhood">Bairro</label>
-              <Input name="neighborhood" maxlength="100" />
+              <Input name="neighborhood" maxLength="100" />
             </FormGroup>
           </FormInline>
           <FormInline>
             <FormGroup>
               <label htmlFor="city">Cidade</label>
-              <Input name="city" maxlength="100" />
+              <Input name="city" maxLength="100" />
             </FormGroup>
             <FormGroup>
               <label htmlFor="state">UF</label>

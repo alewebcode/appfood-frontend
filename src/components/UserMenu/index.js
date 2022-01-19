@@ -69,7 +69,7 @@ export function UserMenu({ openMenuUser }) {
             </Link>
           </li>
           <li>
-            <Link to="auth/dashboard">
+            <Link to="/auth/dashboard">
               <FiSettings size={18} />
 
               <span>Acessar sistema</span>

@@ -13,6 +13,7 @@ export default function InputCurrency({ name, ...rest }) {
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.value = inputValue;
+      console.log(inputRef.current.value);
     }
   }, [inputValue]);
 
@@ -33,6 +34,7 @@ export default function InputCurrency({ name, ...rest }) {
   }
 
   useEffect(() => {
+    setInputValue(defaultValue);
     registerField({
       name: fieldName,
       ref: inputRef.current,
@@ -41,7 +43,7 @@ export default function InputCurrency({ name, ...rest }) {
         setInputValue(value);
       },
     });
-  }, [fieldName, registerField]);
+  }, [fieldName, registerField, defaultValue]);
 
   return (
     <>

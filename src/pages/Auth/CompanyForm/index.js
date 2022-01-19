@@ -92,6 +92,7 @@ export default function CompanyForm({ match }) {
   }, []);
 
   async function handleSubmit(data, { reset }) {
+    // event.preventDefault();
     const formData = new FormData();
 
     try {
@@ -125,29 +126,28 @@ export default function CompanyForm({ match }) {
         delivery: Yup.boolean().required(),
         pickup_in_place: Yup.boolean().required(),
       });
-      schema.test(
-        // this test is added additional to any other (build-in) tests
-        'myCustomCheckboxTest',
-        null, // we'll return error message ourself if needed
-        obj => {
-          // only testing the checkboxes here
-          if (obj.red || obj.orange || obj.green) {
-            return true; // everything is fine
-          }
+      // schema.test(
+      //   'myCustomCheckboxTest',
+      //   null, // we'll return error message ourself if needed
+      //   obj => {
+      //     // only testing the checkboxes here
+      //     if (obj.red || obj.orange || obj.green) {
+      //       return true; // everything is fine
+      //     }
 
-          return new Yup.ValidationError(
-            'Check at least one checkbox',
-            null,
-            'myCustomFieldName'
-          );
-        }
-      );
+      //     return new Yup.ValidationError(
+      //       'Check at least one checkbox',
+      //       null,
+      //       'myCustomFieldName'
+      //     );
+      //   }
+      // );
 
       await schema.validate(data, {
         abortEarly: false,
       });
 
-      reset();
+      //
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const errorMessages = {};
@@ -163,30 +163,33 @@ export default function CompanyForm({ match }) {
     }
 
     if (isAdd) {
-      formData.append('name', data.name);
-      formData.append('logo', data.logo);
-      formData.append('trading_name', data.trading_name);
-      formData.append('cnpj', data.cnpj);
-      formData.append('state_registration', data.state_registration);
-      formData.append('zip_code', data.zip_code);
-      formData.append('street', data.street);
-      formData.append('number', data.number);
-      formData.append('complement', data.complement);
-      formData.append('neighborhood', data.neighborhood);
-      formData.append('city', data.city);
-      formData.append('state', data.state);
-      formData.append('phone', data.phone);
-      formData.append('email', data.email);
-      formData.append('delivery', data.delivery);
-      formData.append('pickup_in_place', data.pickup_in_place);
-      formData.append('segment', data.segment);
-
       try {
+        formData.append('name', data.name);
+        formData.append('logo', data.logo);
+        formData.append('trading_name', data.trading_name);
+        formData.append('cnpj', data.cnpj);
+        formData.append('state_registration', data.state_registration);
+        formData.append('zip_code', data.zip_code);
+        formData.append('street', data.street);
+        formData.append('number', data.number);
+        formData.append('complement', data.complement);
+        formData.append('neighborhood', data.neighborhood);
+        formData.append('city', data.city);
+        formData.append('state', data.state);
+        formData.append('phone', data.phone);
+        formData.append('email', data.email);
+        formData.append('delivery', data.delivery);
+        formData.append('pickup_in_place', data.pickup_in_place);
+        formData.append('segment', data.segment);
+
         await api.post('/companies', formData);
         toast.success('Cadastro efetuado com sucesso');
+
+        reset();
       } catch (err) {
-        console.log(err.response);
-        toast.danger('Não foi possível efetuar o cadastro');
+        toast.error(
+          `Não foi possível efetuar o cadastro.${err.response.data.error}`
+        );
       }
     } else {
       formData.append('name', data.name);
@@ -234,55 +237,55 @@ export default function CompanyForm({ match }) {
           </FormGroup>
           <FormGroup>
             <label htmlFor="name">Nome</label>
-            <Input type="text" name="name" maxlength="100" />
+            <Input type="text" name="name" maxLength="100" />
           </FormGroup>
 
           <FormGroup>
             <label htmlFor="trading_name">Razão social</label>
-            <Input name="trading_name" maxlength="100" />
+            <Input name="trading_name" maxLength="100" />
           </FormGroup>
           <FormInline>
             <FormGroup>
               <label htmlFor="cnpj">CNPJ</label>
-              <Input name="cnpj" maxlength="14" />
+              <Input name="cnpj" maxLength="14" />
             </FormGroup>
 
             <FormGroup>
               <label htmlFor="state_registration">Incrição estadual</label>
-              <Input name="state_registration" maxlength="20" />
+              <Input name="state_registration" maxLength="20" />
             </FormGroup>
           </FormInline>
           <FormInline>
             <FormGroup>
               <label htmlFor="zip_code">CEP</label>
-              <Input name="zip_code" maxlength="10" />
+              <Input name="zip_code" maxLength="10" />
             </FormGroup>
 
             <FormGroup>
               <label htmlFor="street">Logradouro</label>
-              <Input name="street" width="600px" maxlength="200" />
+              <Input name="street" width="600px" maxLength="200" />
             </FormGroup>
 
             <FormGroup>
               <label htmlFor="number">Nº</label>
-              <Input name="number" maxlength="5" />
+              <Input name="number" maxLength="5" />
             </FormGroup>
           </FormInline>
           <FormInline>
             <FormGroup>
               <label htmlFor="complement">Complemento</label>
-              <Input name="complement" maxlength="50" />
+              <Input name="complement" maxLength="50" />
             </FormGroup>
 
             <FormGroup>
               <label htmlFor="neighborhood">Bairro</label>
-              <Input name="neighborhood" maxlength="150" />
+              <Input name="neighborhood" maxLength="150" />
             </FormGroup>
           </FormInline>
           <FormInline>
             <FormGroup>
               <label htmlFor="city">Cidade</label>
-              <Input name="city" maxlength="100" />
+              <Input name="city" maxLength="100" />
             </FormGroup>
             <FormGroup>
               <label htmlFor="state">UF</label>
@@ -306,12 +309,12 @@ export default function CompanyForm({ match }) {
 
           <FormGroup>
             <label htmlFor="phone">Telefone</label>
-            <Input name="phone" maxlength="16" />
+            <Input name="phone" maxLength="16" />
           </FormGroup>
 
           <FormGroup>
             <label htmlFor="email">Email</label>
-            <Input name="email" maxlength="50" />
+            <Input name="email" maxLength="50" />
           </FormGroup>
           <FormGroup>
             <label htmlFor="segment">Segmento</label>

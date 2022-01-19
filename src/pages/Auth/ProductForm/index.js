@@ -39,7 +39,12 @@ export default function ProductForm({ match }) {
       if (!isAdd) {
         const response = await api.get(`/products/${id}`);
 
-        response.data.category = response.data.category.id;
+        formRef.current.setData({
+          category: {
+            label: response.data.category.name,
+            value: response.data.category.id,
+          },
+        });
 
         setInitialData(response.data);
       }
@@ -152,31 +157,21 @@ export default function ProductForm({ match }) {
             <label htmlFor="price">Preço</label>
             <InputCurrency
               name="price"
-              decimalScale={2}
-              decimalSeparator=","
-              fixedDecimalScale
-              thousandSeparator="."
-              prefix="$ "
+              // decimalScale={2}
+              // decimalSeparator=","
+              // fixedDecimalScale
+              // thousandSeparator="."
             />
             {/* <Input name="price" /> */}
           </FormGroup>
           <FormGroup>
             <label htmlFor="category">Categoria</label>
-            {!isAdd ? (
-              initialData.category && (
-                <Select
-                  name="category"
-                  options={optionsSelect}
-                  placeholder="Selecione"
-                />
-              )
-            ) : (
-              <Select
-                name="category"
-                options={optionsSelect}
-                placeholder="Selecione"
-              />
-            )}
+
+            <Select
+              name="category"
+              options={optionsSelect}
+              placeholder="Selecione"
+            />
           </FormGroup>
         </Form>
       </Content>

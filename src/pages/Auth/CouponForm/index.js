@@ -36,7 +36,12 @@ export default function CouponForm({ match }) {
       if (!isAdd) {
         const response = await api.get(`/coupons/${id}`);
 
-        response.data.product = response.data.product.id;
+        formRef.current.setData({
+          product: {
+            label: response.data.product.name,
+            value: response.data.product.id,
+          },
+        });
 
         setInitialData(response.data);
       }
@@ -142,15 +147,7 @@ export default function CouponForm({ match }) {
           <FormGroup>
             <label htmlFor="product">Produto</label>
 
-            {products.length ? (
-              <Select
-                name="product"
-                options={products}
-                placeholder="Selecione"
-              />
-            ) : (
-              <Select name="product" options="" placeholder="Selecione" />
-            )}
+            <Select name="product" options={products} placeholder="Selecione" />
           </FormGroup>
         </Form>
       </Content>

@@ -10,6 +10,7 @@ import {
 import { toast } from 'react-toastify';
 import api from '../../../services/api';
 import { SearchFilter } from '../../../components/Auth/SearchFilter';
+import { formatPrice } from '../../../util/format';
 
 import {
   Container,
@@ -109,7 +110,7 @@ export default function Product() {
               <tr key={product.id}>
                 <td>{product.name}</td>
                 <td>{product.description}</td>
-                <td>{product.price}</td>
+                <td>{formatPrice(product.price)}</td>
                 <td>
                   <Actions>
                     <Link to={`product/edit/${product.id}`}>

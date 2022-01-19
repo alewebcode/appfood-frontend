@@ -41,31 +41,34 @@ export function LeftNav({ open }) {
             <strong>Dashboard</strong>
           </Link>
         </li>
-        <Tooltip onClick={handleClickOpenCompany} id="company">
-          <Link to="!#" onClick={handleClickOpenCompany} id="company">
-            <strong>Empresa</strong>
-            <span>
-              <FiChevronDown />
-            </span>
-          </Link>
+        {authenticated.user.user_type.id === 5 ||
+          (authenticated.user.user_type.id === 1 && (
+            <Tooltip onClick={handleClickOpenCompany} id="company">
+              <Link to="!#" onClick={handleClickOpenCompany} id="company">
+                <strong>Empresa</strong>
+                <span>
+                  <FiChevronDown />
+                </span>
+              </Link>
 
-          <TooltipMenu
-            openDropDown={openDropDownCompany && activeMenu === 'company'}
-          >
-            <DropDownList>
-              <li>
-                <Link to="/auth/companies">
-                  <strong>Listar empresas</strong>
-                </Link>
-              </li>
-              <li>
-                <Link to="/auth/segments">
-                  <strong>Segmentos</strong>
-                </Link>
-              </li>
-            </DropDownList>
-          </TooltipMenu>
-        </Tooltip>
+              <TooltipMenu
+                openDropDown={openDropDownCompany && activeMenu === 'company'}
+              >
+                <DropDownList>
+                  <li>
+                    <Link to="/auth/companies">
+                      <strong>Listar empresas</strong>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/auth/segments">
+                      <strong>Segmentos</strong>
+                    </Link>
+                  </li>
+                </DropDownList>
+              </TooltipMenu>
+            </Tooltip>
+          ))}
         {authenticated.user.user_type.id !== 5 && (
           <Tooltip onClick={handleClickOpenProduct} id="products">
             <Link to="!#" onClick={handleClickOpenProduct} id="products">

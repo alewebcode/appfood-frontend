@@ -47,21 +47,12 @@ export default function Select({ name, options, ...rest }) {
       name: fieldName,
       ref: selectRef.current,
       path: 'state.value',
-      getValue: ref => {
-        if (rest.isMulti) {
-          if (!ref.state.value) {
-            return [];
-          }
-          return ref.state.value.map(option => option.value);
-        }
-        if (!ref.state.value) {
-          return '';
-        }
-
-        return ref.state.value.value;
-      },
+      getValue: ref => ref.state.value?.value,
       setValue: (ref, value) => {
         ref.select.setValue(value || null);
+      },
+      clearValue: ref => {
+        ref.select.clearValue();
       },
     });
   }, [fieldName, registerField, rest.isMulti]);
@@ -69,11 +60,7 @@ export default function Select({ name, options, ...rest }) {
     <>
       <ReactSelect
         // cacheOptions
-        defaultValue={
-          // eslint-disable-next-line no-undef
-          // eslint-disable-next-line react/prop-types
-          defaultValue && options.find(option => option.value === defaultValue)
-        }
+        defaultValue={defaultValue}
         ref={selectRef}
         classNamePrefix="react-select"
         styles={customStyles}

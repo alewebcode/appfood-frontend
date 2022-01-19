@@ -14,7 +14,7 @@ export default function ListCompanies() {
   const [search, setSearch] = useState('');
   const [loading, setIsLoading] = useState(false);
   // const uploads = 'http://192.168.0.103:3333/uploads';
-  const uploads = 'https://appfood-backend.herokuapp.com/uploads';
+  // const uploads = 'https://appfood-backend.herokuapp.com/uploads';
 
   useEffect(() => {
     // setOptions(location.state.cities);
@@ -87,7 +87,7 @@ export default function ListCompanies() {
                 </ProductInfo>
 
                 <img
-                  src={`${uploads}/${product.product_image}`}
+                  src={`https://images-tdt.s3.amazonaws.com/${product.product_image}`}
                   alt="product"
                 />
 

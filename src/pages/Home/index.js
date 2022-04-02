@@ -28,7 +28,7 @@ export default function Home() {
           </Link>
         </div>
         <div>
-          <Link to="/">
+          <Link to="/about">
             <img src={banner3} alt="img3" />
 
             {/* <span>Pizzas</span> */}
